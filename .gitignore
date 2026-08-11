@@ -1,0 +1,37 @@
+# --- Raw source data — download links in README; see data/raw/README.md ---
+data/raw/*
+!data/raw/README.md
+!data/raw/.gitkeep
+# Exception: Climate Watch has no stable direct download link (CC BY 4.0,
+# redistribution permitted with attribution), so the extract we used is committed.
+!data/raw/CW_HistoricalEmissions_ClimateWatch.csv
+
+# --- Large regenerable pipeline outputs ---
+data/outputs/*.csv
+data/outputs/Summary_tool*.xlsx
+data/outputs/Summary_tables_*.xlsx
+
+# --- Keep: committed chart inputs, figures, and the Annex C tables ---
+!data/outputs/charts/
+!data/outputs/charts/*.csv
+!data/outputs/charts/*.xlsx
+!data/outputs/Annex_C.xlsx
+
+# NOTE: interactive payloads (ghg-emissions-interactive/data.js, data.json,
+# countries_*.js) are DELIBERATELY committed — GitHub Pages serves them
+# straight from the tree. Do not add ignore rules for them.
+
+# --- Python ---
+__pycache__/
+*.pyc
+.venv/
+
+# --- Excel / Office temp files ---
+~$*.xlsx
+~$*.xlsm
+~$*.docx
+
+# --- Windows / editor ---
+desktop.ini
+Thumbs.db
+.Rhistory

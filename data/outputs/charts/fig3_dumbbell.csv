@@ -1,0 +1,12 @@
+y_pos,label,owid,primap,gcp_fossil,gcp_blue,gcp_oscar,gcp_luce,edgar,cw,gmst_ref
+1,CO2 excl. LULUCF — Annex I,62.09,62.17,62.11,,,,,,62.09
+2,CO2 excl. LULUCF — Annex II,48.62,48.50,48.63,,,,,,48.62
+3,,,,,,,,,,
+4,All GHG excl. LULUCF — Annex I,59.40,56.15,,,,,,,55.89
+5,All GHG excl. LULUCF — Annex II,45.86,42.96,,,,,,,42.80
+6,,,,,,,,,,
+7,CO2 incl. LULUCF — Annex I,51.21,53.67,,51.22,52.01,53.88,,,52.34
+8,CO2 incl. LULUCF — Annex II,37.73,42.30,,37.74,40.19,39.54,,,39.11
+9,,,,,,,,,,
+10,All GHG incl. LULUCF — Annex I,49.39,50.96,,,,,,,46.37
+11,All GHG incl. LULUCF — Annex II,36.44,39.45,,,,,,,34.29

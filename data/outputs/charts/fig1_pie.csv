@@ -1,0 +1,10 @@
+breakdown,category,value_Mt,share_pct
+gas,CH4,9677.320,19.225
+gas,CO2,36494.100,72.501
+gas,F-Gas,1402.130,2.786
+gas,N2O,2762.620,5.488
+sector,Agriculture,6241.410,12.286
+sector,Energy,38990.400,76.748
+sector,Industrial Processes,3155.570,6.211
+sector,LULUCF,466.726,0.919
+sector,Waste,1948.850,3.836

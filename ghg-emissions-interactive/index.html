@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cumulative emissions shares — interactive</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="chart-app" id="app">
+
+  <h1 class="chart-title" id="chartTitle"></h1>
+  <p class="chart-subtitle">Share of world cumulative emissions (%) across datasets, or of contribution to the rise in global mean surface temperature (GMST)</p>
+
+  <div class="controls">
+    <label class="control control-measure">
+      <span class="control-label">Measure</span>
+      <select id="measureSelect" aria-label="Emissions measure">
+        <option value="ghg_incLUC">All GHGs including LULUCF</option>
+        <option value="co2_incLUC">CO&#8322; including LULUCF</option>
+        <option value="ghg_excLUC">All GHGs excluding LULUCF</option>
+        <option value="co2_excLUC">CO&#8322; excluding LULUCF</option>
+      </select>
+    </label>
+
+    <label class="control control-toggle" title="Reassign emissions of territories under colonial rule to the ruling power">
+      <span class="control-label">Colonial attribution</span>
+      <span class="switch">
+        <input type="checkbox" id="colonialToggle" aria-label="Attribute colonial-era emissions to the ruling power">
+        <span class="switch-track" aria-hidden="true"></span>
+      </span>
+    </label>
+
+    <div class="control control-years">
+      <span class="control-label">Years <span id="yearReadout" class="year-readout"></span>
+        <button type="button" class="year-reset" id="yearReset">Reset</button>
+      </span>
+      <div class="range-slider" id="rangeSlider">
+        <div class="range-track" aria-hidden="true"></div>
+        <div class="range-fill" id="rangeFill" aria-hidden="true"></div>
+        <input type="range" id="startRange" aria-label="Start year">
+        <input type="range" id="endRange" aria-label="End year">
+      </div>
+      <div class="range-ends" aria-hidden="true">
+        <span id="rangeMinLabel"></span><span id="rangeMaxLabel"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="custom-groups" id="customGroups">
+    <button type="button" class="add-group-btn" id="addGroupBtn">+ Add country group</button>
+    <div class="picker" id="picker" hidden>
+      <div class="picker-controls">
+        <input type="search" id="pickerSearch" placeholder="Search countries&#8230;" aria-label="Search countries">
+        <label class="picker-groupby">Group by
+          <select id="pickerGroupBy" aria-label="Group countries by">
+            <option value="none">None</option>
+            <option value="annex">Annex group</option>
+            <option value="institutional">Institutional group</option>
+            <option value="development">Development group</option>
+            <option value="income">Income group</option>
+            <option value="region">World Bank region</option>
+          </select>
+        </label>
+      </div>
+      <div class="picker-list" id="pickerList" role="group" aria-label="Country list"></div>
+      <div class="picker-footer">
+        <span class="picker-count" id="pickerCount">0 selected</span>
+        <input type="text" id="pickerName" maxlength="40" placeholder="Group name (optional)" aria-label="Group name">
+        <button type="button" id="pickerAdd" disabled>Add to chart</button>
+        <button type="button" id="pickerCancel" class="secondary">Cancel</button>
+      </div>
+    </div>
+    <div class="group-list" id="groupList"></div>
+  </div>
+
+  <div class="legend" id="legend" aria-label="Datasets shown"></div>
+
+  <div class="chart-wrap">
+    <svg id="chart" role="img" aria-labelledby="chartTitle"></svg>
+    <div class="tooltip" id="tooltip" role="status" hidden></div>
+  </div>
+
+  <p class="footnote" id="footnote"></p>
+  <details class="data-table">
+    <summary>View the data</summary>
+    <table id="dataTable"></table>
+  </details>
+  <p class="source-line">Sources: OWID (Global Carbon Budget 2025); PRIMAP-hist v2.7; Global Carbon Project 2025 (fossil + BLUE/OSCAR/LUCE land-use models); EDGAR 2025 (JRC/IEA); Climate Watch; Jones et al., National contributions to climate change (GMST). Colonial attribution: Carbon Brief territorial-rule database, 1850&#8211;2023. Chart: Center for Global Development.</p>
+
+</div>
+<script src="tracking.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+
+<!-- CGD iframe resize: reports content height to the parent page on cgdev.org.
+     Copied from the CGD Interactive Coding Standard. -->
+<script>
+(function () {
+  var PARENT_ORIGIN = 'https://www.cgdev.org';
+  var lastHeight = -1;
+
+  function measure() {
+    return Math.ceil(document.body.getBoundingClientRect().height);
+  }
+
+  function report() {
+    var height = measure();
+    if (height <= 0 || height === lastHeight) return;
+    lastHeight = height;
+    window.parent.postMessage({ type: 'cgd-iframe-resize', height: height }, PARENT_ORIGIN);
+  }
+
+  window.addEventListener('load', report);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(report);
+  }
+
+  if (window.ResizeObserver) {
+    new ResizeObserver(report).observe(document.body);
+  } else {
+    window.addEventListener('resize', report);
+  }
+})();
+</script>
+</body>
+</html>
