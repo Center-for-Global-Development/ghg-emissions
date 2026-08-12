@@ -26,9 +26,8 @@ Embed URL:
 > root. The CGD Interactive Toolkit's single-interactive layout puts
 > `index.html` at the root; this repository also holds the full analysis
 > pipeline, so the interactive sits in a subfolder. All asset paths are
-> relative and the page runs unchanged from a subpath. If CGD's embed process
-> requires a root-level `index.html`, flag it and we will add a root redirect
-> or split the interactive into its own repository.
+> relative and the page runs unchanged from a subpath. CGD comms have
+> confirmed this layout works with the embed process (August 2026).
 
 Full documentation of the interactive is in the
 [Interactive documentation](#interactive-documentation) section below.
@@ -335,7 +334,7 @@ the repository root. `PARENT_ORIGIN` is `https://www.cgdev.org`.
 | Responsive 320–1200 px without horizontal scroll | Done |
 | Palette from `cgd-brand-reference.md` | Done |
 | Keyboard operable, visible focus states, chart-equivalent data table | Done |
-| No build step, no CDN dependencies, no `innerHTML` | Done |
+| No build step, no CDN dependencies, no `innerHTML` | Done — the one external request is the comms-provided Adobe Fonts kit |
 | Data sources, dates and transformations documented | Done — this README + `data-registry.md` |
 | Static title/subtitle/source note moved to CMS text | Kept in the page — parts of the text change dynamically with the chart settings, and no CMS copy exists; noted as a deliberate deviation |
 | Own repo under the CGD org | Done — this repository |
@@ -349,16 +348,17 @@ cannot be meaningfully reduced without dropping picker functionality. They are
 lazy-loaded on first use of the country picker, so an embed that never opens
 it (or sets `?custom=0`) never fetches them.
 
-**Fonts.** The page uses Sofia Pro when available and falls back to
-Segoe UI / system sans, which the CGD brand reference sanctions. A Sofia Pro
-webfont (Adobe Fonts kit) is an open question with CGD comms.
+**Fonts.** The page loads Sofia Pro through CGD's Adobe Fonts kit
+(`use.typekit.net/ymp6ujv.css`, provided by CGD comms) and falls back to a
+locally installed Sofia Pro, then Segoe UI / system sans — the fallback chain
+the CGD brand reference sanctions. The kit is the page's only external
+request; if it is unreachable the page still renders on the fallback fonts.
 
 ## Licence and citation
 
-**Licensing to be confirmed.** No licence file is committed yet — a public
-repository without one is "all rights reserved" by default, so this will be
-resolved with CGD comms before the repository is announced (proposal: MIT for
-the code). Each upstream dataset keeps its own licence, listed per source in
+No licence file is committed — CGD comms have opted to launch without one
+(August 2026), which leaves the repository "all rights reserved" by default.
+Each upstream dataset keeps its own licence, listed per source in
 [`data/raw/README.md`](data/raw/README.md) — note PRIMAP-hist is
 CC BY-NC-SA 4.0 (non-commercial) and the Carbon Brief territorial-rule
 database states no licence, which is why neither is redistributed here.

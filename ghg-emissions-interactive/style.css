@@ -18,7 +18,7 @@
   --cgd-red: #D15553;
   --ink: #1A272A;
   --ink-secondary: #394649;
-  --font-body: "Sofia Pro", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-body: "sofia-pro", "Sofia Pro", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
 /* Reset per the coding standard. overflow-x rather than overflow, so a failure of
