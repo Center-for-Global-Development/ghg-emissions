@@ -53,7 +53,7 @@ and regenerate from `main.py`.
 | `gmst_long.csv` | `scripts/06_extract_gmst.py` | GMST: 4 per-measure labels, 1851–2024 |
 | `colonial_attribution_long.csv` | `scripts/07_extract_colonial.py` | Long-format colonial-rule coefficients; ends 2023, forward-filled to 2024 |
 | `all_sources_stacked.csv`, `countries_annual.csv`, `groups_summary.csv` | `scripts/08_stack_and_aggregate.py` | All sources stacked; country level; 28 groups × source × measure × year |
-| `Summary_tables_v6.xlsx`, `Annex_C.xlsx` | `scripts/10_build_summary_tables.py` | 12 static summary tabs (4 measures × 3 period/type) + README tab. `Annex_C.xlsx` is the paper deliverable copy and is **committed** |
+| `Annex_C.xlsx` | `scripts/10_build_summary_tables.py` | 12 static summary tabs (4 measures × 3 period/type) + README tab. **Committed** |
 | `charts/fig1_data.csv` | `scripts/09_prepare_chart_data.py` | CW 2023 gas % + sector % for Figure 1 |
 | `charts/fig2_data.csv` | `scripts/09_prepare_chart_data.py` | OWID World CO2/non-CO2 × fossil/LULUCF, 4 series, 1850–2024 |
 | `charts/fig3_data.csv` | `scripts/09_prepare_chart_data.py` | Cumulative shares 1850–2024 (OWID, PRIMAP, GCP) |
@@ -87,7 +87,7 @@ and regenerate from `main.py`.
 | `scripts/07_extract_colonial.py` | Python | `territorial_rule_database_1850_2023.csv` | `colonial_attribution_long.csv` |
 | `scripts/08_stack_and_aggregate.py` | Python | All `*_long.csv`, `data/country_groups.csv` | `all_sources_stacked.csv`, `countries_annual.csv`, `groups_summary.csv` |
 | `scripts/09_prepare_chart_data.py` | Python | `groups_summary.csv`, `countries_annual.csv`, `colonial_attribution_long.csv`, `owid_long.csv`, raw OWID / CW / PRIMAP files, `population.csv` + `mpd2023_web.xlsx` (IRL patch) | Every `charts/*.csv` listed above |
-| `scripts/10_build_summary_tables.py` | Python | `groups_summary.csv`, `countries_annual.csv`, `colonial_attribution_long.csv`, `country_groups.csv`, raw OWID / EDGAR / CW / GCP-fossil files | `Summary_tables_v6.xlsx`, `Annex_C.xlsx` |
+| `scripts/10_build_summary_tables.py` | Python | `groups_summary.csv`, `countries_annual.csv`, `colonial_attribution_long.csv`, `country_groups.csv`, raw OWID / EDGAR / CW / GCP-fossil files | `Annex_C.xlsx` |
 | `scripts/11_validate.py` | Python | `groups_summary.csv`, `countries_annual.csv`, `gmst_long.csv`, `data/country_groups.csv` | none — exits 0/1 |
 | `scripts/12_prepare_interactive_dumbbell.py` | Python | `charts/interactive_*.csv` ×8, `charts/interactive_gmst.csv`, `charts/interactive_gmst_colonial.csv`, `countries_annual.csv`, `gmst_long.csv`, `colonial_attribution_long.csv`, `data/country_groups.csv` | `ghg-emissions-interactive/data.js`, `data.json`, `countries_*.js` ×4 |
 | `scripts/charts/fig1.ps1` … `fig11.ps1` | PowerShell | `charts/*.csv` + `templates/Chart-template-*.xlsx` | `charts/Figure_*.xlsx` (Excel COM; Windows only) |

@@ -185,7 +185,6 @@ workbook that is not published, and cannot run from a clean clone.
 - `countries_annual.csv`
 - `groups_summary.csv`
 - `all_sources_stacked.csv`
-- `Summary_tables_v6.xlsx` (the working copy of the Annex C tables)
 
 ## Contact
 

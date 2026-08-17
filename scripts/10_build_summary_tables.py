@@ -1,8 +1,7 @@
 """
 10_build_summary_tables.py
 Build the paper's summary tables — README tab + 12 static summary tabs.
-Written to Summary_tables_v6.xlsx and copied to Annex_C.xlsx (the committed
-paper deliverable).
+Written to Annex_C.xlsx, the committed paper deliverable.
 
 v2 changes vs v1:
   - Tab order within each group reversed: GHG incl → GHG excl → CO2 incl → CO2 excl
@@ -78,8 +77,7 @@ EDGAR_FALLBACK  = "c:/tmp/edgar_booklet_tmp.xlsx"
 CW_RAW          = os.path.join(RAW_DIR, "CW_HistoricalEmissions_ClimateWatch.csv")
 GCP_FOSSIL_XLSX = os.path.join(RAW_DIR, "National_Fossil_Carbon_Emissions_2025_v0.3.xlsx")
 
-OUT_XLSX        = os.path.join(OUT_DIR, "Summary_tables_v6.xlsx")
-ANNEX_C_XLSX    = os.path.join(OUT_DIR, "Annex_C.xlsx")   # paper deliverable copy
+OUT_XLSX        = os.path.join(OUT_DIR, "Annex_C.xlsx")   # paper deliverable
 
 GCP_CONV = 3.664   # MtC → MtCO2
 
@@ -1052,7 +1050,3 @@ for tab_name, s, e, is_colonial, measure, sources, row_values in tab_data:
 os.makedirs(OUT_DIR, exist_ok=True)
 wb.save(OUT_XLSX)
 print(f"\nSaved: {os.path.basename(OUT_XLSX)}  (README + {len(TABS)} data tabs)")
-
-import shutil
-shutil.copyfile(OUT_XLSX, ANNEX_C_XLSX)
-print(f"Copied to paper deliverable: {os.path.basename(ANNEX_C_XLSX)}")
