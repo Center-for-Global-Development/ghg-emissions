@@ -97,6 +97,37 @@ Embed URL, configuration parameters, colours, payload sizes and the toolkit
 delivery checklist are documented in
 [`ghg-emissions-interactive/README.md`](ghg-emissions-interactive/README.md).
 
+## Repository map
+
+```
+ghg-emissions/
+  README.md                  # this file
+  TRACKING.md                # analytics event inventory
+  main.py                    # pipeline runner
+  requirements.txt
+  data-registry.md           # inventory of every input and output
+  .nojekyll                  # serve GitHub Pages without a Jekyll pass
+  data/
+    country_groups.csv       # curated group membership
+    raw/                     # raw sources (download links in its README)
+    outputs/
+      Annex_C.xlsx           # summary tables
+      charts/                # chart-input CSVs + Figure_1..11.xlsx
+  scripts/
+    00_download_raw.py       # fetch raw sources
+    00_extract_country_groups.py   # provenance only — needs unpublished workbook
+    01..06_*.py              # one extract per source
+    07_extract_colonial.py
+    08_stack_and_aggregate.py
+    09_prepare_chart_data.py
+    10_build_summary_tables.py
+    11_validate.py
+    12_prepare_interactive_dumbbell.py
+    charts/                  # PowerShell + Excel COM figure scripts
+  templates/                 # vendored CGD chart templates (see its README)
+  ghg-emissions-interactive/ # the interactive (page code + data payloads)
+```
+
 ## How to reproduce
 
 Requires Python 3 (developed on 3.14) and the packages in `requirements.txt`. The figure
@@ -136,37 +167,6 @@ slightly different numbers.
 `scripts/00_extract_country_groups.py` is provenance-only: it documents how
 the tracked `data/country_groups.csv` was originally built from an internal
 workbook that is not published, and cannot run from a clean clone.
-
-## Repository map
-
-```
-ghg-emissions/
-  README.md                  # this file
-  TRACKING.md                # analytics event inventory
-  main.py                    # pipeline runner
-  requirements.txt
-  data-registry.md           # inventory of every input and output
-  .nojekyll                  # serve GitHub Pages without a Jekyll pass
-  data/
-    country_groups.csv       # curated group membership
-    raw/                     # raw sources (download links in its README)
-    outputs/
-      Annex_C.xlsx           # summary tables
-      charts/                # chart-input CSVs + Figure_1..11.xlsx
-  scripts/
-    00_download_raw.py       # fetch raw sources
-    00_extract_country_groups.py   # provenance only — needs unpublished workbook
-    01..06_*.py              # one extract per source
-    07_extract_colonial.py
-    08_stack_and_aggregate.py
-    09_prepare_chart_data.py
-    10_build_summary_tables.py
-    11_validate.py
-    12_prepare_interactive_dumbbell.py
-    charts/                  # PowerShell + Excel COM figure scripts
-  templates/                 # vendored CGD chart templates (see its README)
-  ghg-emissions-interactive/ # the interactive (page code + data payloads)
-```
 
 ## Outputs
 
