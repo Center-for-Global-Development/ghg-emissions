@@ -1,7 +1,7 @@
 """
-11_extract_colonial.py
+07_extract_colonial.py
 Reshape Carbon Brief's territorial-rule database into long format for use
-in the colonial-attribution analysis (Fig J).
+in the colonial-attribution analysis (Figure 8 and the interactive's toggle).
 
 Input:  data/raw/territorial_rule_database_1850_2023.csv
 Output: data/outputs/colonial_attribution_long.csv

@@ -2,14 +2,16 @@
 main.py — run the full GHG emissions analysis pipeline.
 
 Usage:
-  python main.py                 run steps 1-13 (extracts through interactive payloads)
+  python main.py                 run steps 1-12 (extracts through interactive payloads)
   python main.py --download      run scripts/00_download_raw.py first
   python main.py --charts        also run the Excel figure scripts (Windows + Excel only)
-  python main.py --only 07,09    run only the listed steps
-  python main.py --from 08       resume from a step
-  python main.py --skip-validate skip step 12
+  python main.py --only 9,10     run only the listed steps
+  python main.py --from 8        resume from a step
+  python main.py --skip-validate skip step 11
 
-The figure workbooks (step 14) need Windows with Excel installed and are
+Step numbers match the script numbers in scripts/.
+
+The figure workbooks (--charts) need Windows with Excel installed and are
 committed to the repository, so --charts is off by default.
 
 Raw data must be present in data/raw/ first — see data/raw/README.md or run
@@ -33,19 +35,16 @@ STEPS = [
     (4, "EDGAR extract", "scripts/04_extract_edgar.py"),
     (5, "GCP extract", "scripts/05_extract_gcp.py"),
     (6, "GMST extract", "scripts/06_extract_gmst.py"),
-    (7, "Colonial attribution coefficients", "scripts/11_extract_colonial.py"),
-    (8, "Stack and aggregate", "scripts/07_stack_and_aggregate.py"),
-    (9, "Summary workbook", "scripts/08_build_workbook.py"),
-    (10, "Chart data", "scripts/09_prepare_chart_data.py"),
-    (11, "Annex C tables", "scripts/13_build_summary_tables.py"),
-    (12, "Validate", "scripts/12_validate.py"),
-    (13, "Interactive payloads", "scripts/14_prepare_interactive_dumbbell.py"),
+    (7, "Colonial attribution coefficients", "scripts/07_extract_colonial.py"),
+    (8, "Stack and aggregate", "scripts/08_stack_and_aggregate.py"),
+    (9, "Chart data", "scripts/09_prepare_chart_data.py"),
+    (10, "Annex C tables", "scripts/10_build_summary_tables.py"),
+    (11, "Validate", "scripts/11_validate.py"),
+    (12, "Interactive payloads", "scripts/12_prepare_interactive_dumbbell.py"),
 ]
 
-# Chart scripts (step 14) — optional, Windows + Excel via COM
-CHART_SCRIPTS = [f"scripts/charts/fig{i}.ps1" for i in range(1, 14)] + [
-    "scripts/charts/figA_dynamic.ps1"
-]
+# Chart scripts (--charts) — optional, Windows + Excel via COM
+CHART_SCRIPTS = [f"scripts/charts/fig{i}.ps1" for i in range(1, 12)]
 
 # Raw files every run needs (Climate Watch is committed; the rest are
 # downloaded — see data/raw/README.md)
@@ -106,11 +105,11 @@ def main():
     p.add_argument("--charts", action="store_true",
                    help="also run the Excel figure scripts (Windows + Excel)")
     p.add_argument("--only", metavar="N,N",
-                   help="run only these step numbers, e.g. --only 07,09")
+                   help="run only these step numbers, e.g. --only 9,10")
     p.add_argument("--from", dest="from_step", metavar="N",
                    help="resume from this step number")
     p.add_argument("--skip-validate", action="store_true",
-                   help="skip step 12 (validation)")
+                   help="skip step 11 (validation)")
     args = p.parse_args()
 
     if args.download:
@@ -131,7 +130,7 @@ def main():
     elif args.from_step:
         steps = [s for s in steps if s[0] >= int(args.from_step)]
     if args.skip_validate:
-        steps = [s for s in steps if s[0] != 12]
+        steps = [s for s in steps if s[0] != 11]
 
     t0 = time.time()
     for num, desc, script in steps:

@@ -4,8 +4,8 @@ figA.ps1
 Generate Figure_3.xlsx -- static 1850-2024 cumulative dumbbell.
 
 Inputs:
-  data/outputs/charts/fig3_dumbbell.csv, dumbbell_raw_*.csv, dumbbell_gmst.csv
-  cgd-general/chart-templates/Chart-template-Dumbbell.xlsx
+  data/outputs/charts/fig3_data.csv
+  templates/Chart-template-Dumbbell.xlsx
 
 Output:
   data/outputs/charts/Figure_3.xlsx
@@ -56,7 +56,7 @@ try {
 . "$PSScriptRoot\_chart_dumbbell.ps1"
 
 Write-Host "`nFig 3: Dumbbell 1850-2024 ..."
-Build-Dumbbell "fig3_dumbbell.csv" "Figure_3.xlsx" $CHART_TITLES["fig3"]
+Build-Dumbbell "fig3_data.csv" "Figure_3.xlsx" $CHART_TITLES["fig3"]
 
 } catch {
     Write-Host "ERROR: $_"

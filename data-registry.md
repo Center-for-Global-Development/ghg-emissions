@@ -51,25 +51,23 @@ and regenerate from `main.py`.
 | `edgar_long.csv` | `scripts/04_extract_edgar.py` | EDGAR, 4 measures (excl-LUC 1970–2024; incl-LUC with LULUCF from 1990) |
 | `gcp_long.csv` | `scripts/05_extract_gcp.py` | GCP: co2_excLUC (fossil) + co2_incLUC (3 LUC models), outer join, 1750–2024 |
 | `gmst_long.csv` | `scripts/06_extract_gmst.py` | GMST: 4 per-measure labels, 1851–2024 |
-| `colonial_attribution_long.csv` | `scripts/11_extract_colonial.py` | Long-format colonial-rule coefficients; ends 2023, forward-filled to 2024 |
-| `all_sources_stacked.csv`, `countries_annual.csv`, `groups_summary.csv` | `scripts/07_stack_and_aggregate.py` | All sources stacked; country level; 28 groups × source × measure × year |
-| `Summary_tool_v2.xlsx` | `scripts/08_build_workbook.py` | Parameterised summary workbook (Summary + Results tabs) |
-| `Annex_C.xlsx` | `scripts/13_build_summary_tables.py` | 12 static summary tabs (4 measures × 3 period/type) + README tab. **Committed** |
-| `charts/fig1_pie.csv` | `scripts/09_prepare_chart_data.py` | CW 2023 gas % + sector % for Figure 1 |
-| `charts/fig2_stacked.csv`, `charts/fig2_combined.csv` | `scripts/09_prepare_chart_data.py` | OWID World fossil/industry + LULUCF, 1850–2024 |
-| `charts/fig3_dumbbell.csv` | `scripts/09_prepare_chart_data.py` | Cumulative shares 1850–2024 (OWID, PRIMAP, GCP) |
-| `charts/fig4_dumbbell.csv` | `scripts/09_prepare_chart_data.py` | Cumulative shares 1990–2024 (all sources) |
-| `charts/fig5_stacked.csv` | `scripts/09_prepare_chart_data.py` | OWID annual by 8 country groups × 4 measures |
-| `charts/fig6_multiline.csv`, `charts/fig7_multiline.csv` | `scripts/09_prepare_chart_data.py` | Annual MtCO2e per source/group × 4 measures + per-measure GMST cumulative % (forward / reverse cumulative variants) |
-| `charts/fig8_dumbbell.csv` | `scripts/09_prepare_chart_data.py` | Colonial-attributed cumulative shares 1850–2024 |
-| `charts/fig9_percapita.csv` | `scripts/09_prepare_chart_data.py` | Annual per-capita emissions, 4 groups × 4 measures, OWID, 1850–2024 |
-| `charts/fig10_percapita_cumulative_1850.csv`, `charts/fig11_percapita_cumulative_1990.csv` | `scripts/09_prepare_chart_data.py` | Cumulative per-capita shares (TS / EN / PYW methods + OWID absolute share), 1850- and 1990-baselines |
-| `charts/fig12_multiline.csv`, `charts/fig13_multiline.csv` | `scripts/09_prepare_chart_data.py` | Annual % share of world emissions (ghg_incLUC subset / all 4 measures) |
-| `charts/dumbbell_gmst.csv`, `charts/dumbbell_gmst_asis.csv`, `charts/dumbbell_gmst_J.csv` | `scripts/09_prepare_chart_data.py` | Cumulative GMST °C per measure × group × year: Jones group rows; country-level as-reported; country-level colonial-attributed |
-| `charts/dumbbell_raw_[measure].csv` ×4, `charts/dumbbell_raw_[measure]_J.csv` ×4 | `scripts/09_prepare_chart_data.py` | Annual MtCO2e per source × group × year, as-reported and colonial-attributed; inputs to `figA_dynamic.ps1` and script 14 |
-| `charts/Figure_1.xlsx` … `charts/Figure_13.xlsx`, `charts/Figure_A_dynamic.xlsx` | `scripts/charts/fig1.ps1` … `fig13.ps1`, `figA_dynamic.ps1` | Final figure workbooks (Excel COM automation; Windows only). **Committed** |
-| `ghg-emissions-interactive/data.js` + `data.json` | `scripts/14_prepare_interactive_dumbbell.py` | Core payload for the interactive (~203 KB): group series both attributions, cumulative GMST, picker metadata. **Committed — GitHub Pages serves from the tree; do not gitignore** |
-| `ghg-emissions-interactive/countries_[measure].js` ×4 | `scripts/14_prepare_interactive_dumbbell.py` | Country-level payloads for the custom picker (1.6–2.9 MB each, lazy-loaded). **Committed — do not gitignore** |
+| `colonial_attribution_long.csv` | `scripts/07_extract_colonial.py` | Long-format colonial-rule coefficients; ends 2023, forward-filled to 2024 |
+| `all_sources_stacked.csv`, `countries_annual.csv`, `groups_summary.csv` | `scripts/08_stack_and_aggregate.py` | All sources stacked; country level; 28 groups × source × measure × year |
+| `Summary_tables_v6.xlsx`, `Annex_C.xlsx` | `scripts/10_build_summary_tables.py` | 12 static summary tabs (4 measures × 3 period/type) + README tab. `Annex_C.xlsx` is the paper deliverable copy and is **committed** |
+| `charts/fig1_data.csv` | `scripts/09_prepare_chart_data.py` | CW 2023 gas % + sector % for Figure 1 |
+| `charts/fig2_data.csv` | `scripts/09_prepare_chart_data.py` | OWID World CO2/non-CO2 × fossil/LULUCF, 4 series, 1850–2024 |
+| `charts/fig3_data.csv` | `scripts/09_prepare_chart_data.py` | Cumulative shares 1850–2024 (OWID, PRIMAP, GCP) |
+| `charts/fig4_data.csv` | `scripts/09_prepare_chart_data.py` | Cumulative shares 1990–2024 (all sources) |
+| `charts/fig5_data.csv` | `scripts/09_prepare_chart_data.py` | OWID annual by 8 country groups × 4 measures |
+| `charts/fig6_data.csv`, `charts/fig7_data.csv` | `scripts/09_prepare_chart_data.py` | Annual MtCO2e per source/group × 4 measures + per-measure GMST cumulative % (forward / reverse cumulative variants) |
+| `charts/fig8_data.csv` | `scripts/09_prepare_chart_data.py` | Colonial-attributed cumulative shares 1850–2024 |
+| `charts/fig9_data.csv` | `scripts/09_prepare_chart_data.py` | Annual per-capita emissions, 4 groups × 4 measures, OWID, 1850–2024 |
+| `charts/fig10_data.csv`, `charts/fig11_data.csv` | `scripts/09_prepare_chart_data.py` | Cumulative per-capita shares (TS / EN / PYW methods + OWID absolute share), 1850- and 1990-baselines |
+| `charts/interactive_gmst.csv`, `charts/interactive_gmst_colonial.csv` | `scripts/09_prepare_chart_data.py` | Cumulative GMST °C per measure × group × year, country-level: as-reported and colonial-attributed |
+| `charts/interactive_[measure].csv` ×4, `charts/interactive_[measure]_colonial.csv` ×4 | `scripts/09_prepare_chart_data.py` | Annual MtCO2e per source × group × year, as-reported and colonial-attributed; inputs to script 12 |
+| `charts/Figure_1.xlsx` … `charts/Figure_11.xlsx` | `scripts/charts/fig1.ps1` … `fig11.ps1` | Final figure workbooks (Excel COM automation; Windows only). **Committed** |
+| `ghg-emissions-interactive/data.js` + `data.json` | `scripts/12_prepare_interactive_dumbbell.py` | Core payload for the interactive (~203 KB): group series both attributions, cumulative GMST, picker metadata. **Committed — GitHub Pages serves from the tree; do not gitignore** |
+| `ghg-emissions-interactive/countries_[measure].js` ×4 | `scripts/12_prepare_interactive_dumbbell.py` | Country-level payloads for the custom picker (1.6–2.9 MB each, lazy-loaded). **Committed — do not gitignore** |
 
 ---
 
@@ -86,12 +84,11 @@ and regenerate from `main.py`.
 | `scripts/04_extract_edgar.py` | Python | `EDGAR_2025_GHG_booklet_2025.xlsx` | `edgar_long.csv` |
 | `scripts/05_extract_gcp.py` | Python | GCP fossil + LUC xlsx, `data/country_groups.csv` | `gcp_long.csv` |
 | `scripts/06_extract_gmst.py` | Python | `GMST_response_1851-2024.csv` | `gmst_long.csv` |
-| `scripts/07_stack_and_aggregate.py` | Python | All `*_long.csv`, `data/country_groups.csv` | `all_sources_stacked.csv`, `countries_annual.csv`, `groups_summary.csv` |
-| `scripts/08_build_workbook.py` | Python | `groups_summary.csv`, `countries_annual.csv`, `data/country_groups.csv` | `Summary_tool_v2.xlsx` |
+| `scripts/07_extract_colonial.py` | Python | `territorial_rule_database_1850_2023.csv` | `colonial_attribution_long.csv` |
+| `scripts/08_stack_and_aggregate.py` | Python | All `*_long.csv`, `data/country_groups.csv` | `all_sources_stacked.csv`, `countries_annual.csv`, `groups_summary.csv` |
 | `scripts/09_prepare_chart_data.py` | Python | `groups_summary.csv`, `countries_annual.csv`, `colonial_attribution_long.csv`, `owid_long.csv`, raw OWID / CW / PRIMAP files, `population.csv` + `mpd2023_web.xlsx` (IRL patch) | Every `charts/*.csv` listed above |
-| `scripts/11_extract_colonial.py` | Python | `territorial_rule_database_1850_2023.csv` | `colonial_attribution_long.csv` |
-| `scripts/12_validate.py` | Python | `groups_summary.csv`, `countries_annual.csv`, `gmst_long.csv`, `data/country_groups.csv` | none — exits 0/1 |
-| `scripts/13_build_summary_tables.py` | Python | `groups_summary.csv`, `countries_annual.csv`, `colonial_attribution_long.csv`, `country_groups.csv`, raw OWID / EDGAR / CW / GCP-fossil files | `Annex_C.xlsx` |
-| `scripts/14_prepare_interactive_dumbbell.py` | Python | `charts/dumbbell_raw_*.csv` ×8, `charts/dumbbell_gmst_asis.csv`, `charts/dumbbell_gmst_J.csv`, `countries_annual.csv`, `gmst_long.csv`, `colonial_attribution_long.csv`, `data/country_groups.csv` | `ghg-emissions-interactive/data.js`, `data.json`, `countries_*.js` ×4 |
-| `scripts/charts/fig1.ps1` … `fig13.ps1`, `figA_dynamic.ps1` | PowerShell | `charts/*.csv` + `templates/Chart-template-*.xlsx` | `charts/Figure_*.xlsx` (Excel COM; Windows only) |
+| `scripts/10_build_summary_tables.py` | Python | `groups_summary.csv`, `countries_annual.csv`, `colonial_attribution_long.csv`, `country_groups.csv`, raw OWID / EDGAR / CW / GCP-fossil files | `Summary_tables_v6.xlsx`, `Annex_C.xlsx` |
+| `scripts/11_validate.py` | Python | `groups_summary.csv`, `countries_annual.csv`, `gmst_long.csv`, `data/country_groups.csv` | none — exits 0/1 |
+| `scripts/12_prepare_interactive_dumbbell.py` | Python | `charts/interactive_*.csv` ×8, `charts/interactive_gmst.csv`, `charts/interactive_gmst_colonial.csv`, `countries_annual.csv`, `gmst_long.csv`, `colonial_attribution_long.csv`, `data/country_groups.csv` | `ghg-emissions-interactive/data.js`, `data.json`, `countries_*.js` ×4 |
+| `scripts/charts/fig1.ps1` … `fig11.ps1` | PowerShell | `charts/*.csv` + `templates/Chart-template-*.xlsx` | `charts/Figure_*.xlsx` (Excel COM; Windows only) |
 | `scripts/charts/_chart_helpers.ps1`, `_chart_dumbbell.ps1`, `_chart_multiline.ps1` | PowerShell | — | Shared helpers dot-sourced by the fig scripts |

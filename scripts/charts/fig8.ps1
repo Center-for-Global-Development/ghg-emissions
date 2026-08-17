@@ -6,13 +6,13 @@ Generate Figure_8.xlsx -- the colonial-attributed cumulative-shares dumbbell
 to controlling powers per Carbon Brief's territorial-rule database).
 
 Inputs:
-  data/outputs/charts/fig8_dumbbell.csv
-  cgd-general/chart-templates/Chart-template-Dumbbell.xlsx
+  data/outputs/charts/fig8_data.csv
+  templates/Chart-template-Dumbbell.xlsx
 
 Output:
   data/outputs/charts/Figure_8.xlsx
 
-Pre-req: scripts 11 + 09 must have run so fig8_dumbbell.csv exists.
+Pre-req: scripts 11 + 09 must have run so fig8_data.csv exists.
 #>
 
 param(
@@ -63,7 +63,7 @@ try {
 
 Write-Host "`nFig J: Colonial-attributed dumbbell 1850-2024 ..."
 
-$dCsv  = Load-CSV "fig8_dumbbell.csv"
+$dCsv  = Load-CSV "fig8_data.csv"
 $nRows = @($dCsv).Count
 
 $wb2 = Open-Template "Chart-template-Dumbbell.xlsx"

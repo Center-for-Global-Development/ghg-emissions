@@ -1,15 +1,15 @@
 """
-14_prepare_interactive_dumbbell.py
+12_prepare_interactive_dumbbell.py
 
 Build the JSON data payloads for the interactive web dumbbell
 (ghg-emissions-interactive/).
 
 Core payload (data.js / data.json — loaded by every embed):
   group-level annual series from the CSVs produced by 09_prepare_chart_data.py
-    charts/dumbbell_raw_[measure].csv      as-reported annual MtCO2e per source x group
-    charts/dumbbell_raw_[measure]_J.csv    colonial-attributed equivalent
-    charts/dumbbell_gmst_asis.csv          as-reported cumulative GMST degC per measure x group
-    charts/dumbbell_gmst_J.csv             colonial-attributed equivalent
+    charts/interactive_[measure].csv           as-reported annual MtCO2e per source x group
+    charts/interactive_[measure]_colonial.csv  colonial-attributed equivalent
+    charts/interactive_gmst.csv                as-reported cumulative GMST degC per measure x group
+    charts/interactive_gmst_colonial.csv       colonial-attributed equivalent
   plus country picker metadata (name + annex/income/region buckets per country)
   from data/country_groups.csv.
 
@@ -25,10 +25,10 @@ The web page computes shares client-side:
   share = sum(group or custom selection, start..end) / (sum(annex1) + sum(nona1)) * 100
   gmst  = (cum[end] - cum[start-1]) / (world[end] - world[start-1]) * 100
           (cum[start-1] treated as 0 when start <= 1851)
-which mirrors the SUMIFS/VLOOKUP formulas in the discontinued
-Figure_A_dynamic.xlsx / FigJ_dynamic (scripts/charts/figA_dynamic.ps1).
+which mirrors the SUMIFS/VLOOKUP formulas of the discontinued dynamic-date
+dumbbell workbook the interactive replaced.
 
-Pre-req: scripts 09 and 11 must have run.
+Pre-req: scripts 07 and 09 must have run.
 """
 
 import csv
@@ -49,8 +49,8 @@ GROUPS = ["annex2", "annex1", "nona1"]
 YEAR_MIN = 1850   # slider floor; also the start of the colonial attribution table
 
 ATTRIBUTIONS = {
-    "asis":     {"raw_suffix": "",   "gmst_file": "dumbbell_gmst_asis.csv"},
-    "colonial": {"raw_suffix": "_J", "gmst_file": "dumbbell_gmst_J.csv"},
+    "asis":     {"raw_suffix": "",          "gmst_file": "interactive_gmst.csv"},
+    "colonial": {"raw_suffix": "_colonial", "gmst_file": "interactive_gmst_colonial.csv"},
 }
 
 # countries_annual.csv source names -> payload source keys.
@@ -305,7 +305,7 @@ def main():
     for attr_name, spec in ATTRIBUTIONS.items():
         block = {"measures": {}}
         for msr in MEASURES:
-            path = os.path.join(CSV_DIR, f"dumbbell_raw_{msr}{spec['raw_suffix']}.csv")
+            path = os.path.join(CSV_DIR, f"interactive_{msr}{spec['raw_suffix']}.csv")
             block["measures"][msr] = build_measure(read_csv_dict(path))
         block["gmst"] = build_gmst(
             read_csv_dict(os.path.join(CSV_DIR, spec["gmst_file"])))

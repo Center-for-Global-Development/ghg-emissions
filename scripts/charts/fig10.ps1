@@ -2,12 +2,12 @@
 .SYNOPSIS
 figH.ps1 — Cumulative per-capita emissions dumbbell, 1850–2024 baseline (Figure 10 in paper).
 
-Reads fig10_percapita_cumulative_1850.csv (built by 09_prepare_chart_data.py).
+Reads fig10_data.csv (built by 09_prepare_chart_data.py).
 Three dots per row: Method A (TS), Method B (EN), Method C (PYW) + abs_share triangle.
 
 Input:
-  data/outputs/charts/fig10_percapita_cumulative_1850.csv
-  cgd-general/chart-templates/Chart-template-Dumbbell.xlsx
+  data/outputs/charts/fig10_data.csv
+  templates/Chart-template-Dumbbell.xlsx
 
 Output:
   data/outputs/charts/Figure_10.xlsx
@@ -232,7 +232,7 @@ try {
     $em = [char]0x2013   # en dash
 
     Write-Host "`nFigure 10: 1850-2024 baseline ..."
-    Build-FigH "fig10_percapita_cumulative_1850.csv" "Figure_10.xlsx" `
+    Build-FigH "fig10_data.csv" "Figure_10.xlsx" `
         "Cumulative per-capita emissions as % of world total (1850${em}2024)"
 
 } catch {

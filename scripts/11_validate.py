@@ -1,7 +1,7 @@
 """
 11_validate.py - Pipeline invariant checks.
 
-Run after re-running 07_stack_and_aggregate.py to catch regressions in the
+Run after re-running 08_stack_and_aggregate.py to catch regressions in the
 pipeline outputs. Each check is a simple assertion grounded in a real bug
 this project has hit at least once. Exit code 0 = all pass, 1 = any failure.
 

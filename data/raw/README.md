@@ -40,6 +40,9 @@ Notes:
   accessed 19 February 2026. ICOS now serves v1.0 of both; numbers may differ
   slightly from the committed outputs if you regenerate with v1.0.
 - **Carbon Brief territorial rule database** states no licence; it is linked, not
-  redistributed. See the main README for how it is used.
+  redistributed. It supplies the (territory, year, power) coefficients used to
+  reassign country-year emissions to the powers that controlled them — Figure 8 and
+  the interactive's colonial-attribution toggle.
 - `population.csv` / `mpd2023_web.xlsx` are used only to patch Ireland's population
-  before 1950 (see the main README, "Data handling and caveats").
+  before 1950, which OWID does not carry: the "Ireland (whole island)" series for
+  1850–1920 and the Maddison Project Database for 1921–1949.

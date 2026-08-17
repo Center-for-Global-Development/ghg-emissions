@@ -4,8 +4,8 @@ figE.ps1
 Generate Figure_7.xlsx -- reverse cumulative share MultiLine (4 measures).
 
 Inputs:
-  data/outputs/charts/fig7_multiline.csv   (from 09_prepare_chart_data.py)
-  cgd-general/chart-templates/Chart-template-MultiLine.xlsx
+  data/outputs/charts/fig7_data.csv   (from 09_prepare_chart_data.py)
+  templates/Chart-template-MultiLine.xlsx
 
 Output:
   data/outputs/charts/Figure_7.xlsx

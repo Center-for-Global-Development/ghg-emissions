@@ -4,13 +4,13 @@ fig1.ps1
 Generate Figure_1.xlsx -- PiePair: GHG composition by gas and sector.
 
 Input:
-  data/outputs/charts/fig1_pie.csv
-  cgd-general/chart-templates/Chart-template-PiePair.xlsx
+  data/outputs/charts/fig1_data.csv
+  templates/Chart-template-PiePair.xlsx
 
 Output:
   data/outputs/charts/Figure_1.xlsx
 
-Pre-req: script 09 must have run to produce fig1_pie.csv.
+Pre-req: script 09 must have run to produce fig1_data.csv.
 #>
 
 param(
@@ -37,7 +37,7 @@ try { $xl.AutomationSecurity = 3 } catch {}
 try {
 
 Write-Host "`nFigure 1: PiePair ..."
-$f1  = Load-CSV "fig1_pie.csv"
+$f1  = Load-CSV "fig1_data.csv"
 $wb  = Open-Template "Chart-template-PiePair.xlsx"
 $ws  = $wb.Sheets("Data")
 

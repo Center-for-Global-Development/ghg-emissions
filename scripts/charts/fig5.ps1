@@ -4,8 +4,8 @@ figC.ps1
 Generate Figure_5.xlsx -- total GHG emissions by country group, stacked area.
 
 Inputs:
-  data/outputs/charts/fig5_stacked.csv    (from 09_prepare_chart_data.py)
-  cgd-general/chart-templates/Chart-template-StackedArea.xlsx
+  data/outputs/charts/fig5_data.csv    (from 09_prepare_chart_data.py)
+  templates/Chart-template-StackedArea.xlsx
 
 Output:
   data/outputs/charts/Figure_5.xlsx
@@ -149,7 +149,7 @@ try { $xl.AutomationSecurity = 3 } catch {}
 try {
 
 Write-Host "`nFig 5: StackedArea (8 country groups, 4 measures) ..."
-$fC = Load-CSV "fig5_stacked.csv"
+$fC = Load-CSV "fig5_data.csv"
 
 $wbC = Open-Template "Chart-template-StackedArea.xlsx"
 $firstMsr = $MEASURES[0]

@@ -8,7 +8,6 @@ data/raw/*
 
 # --- Large regenerable pipeline outputs ---
 data/outputs/*.csv
-data/outputs/Summary_tool*.xlsx
 data/outputs/Summary_tables_*.xlsx
 
 # --- Keep: committed chart inputs, figures, and the Annex C tables ---

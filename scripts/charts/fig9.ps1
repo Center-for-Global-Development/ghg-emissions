@@ -4,13 +4,13 @@ figG.ps1
 Generate Figure_9.xlsx -- per-capita GHG emissions by country group, 4 tabs.
 
 Inputs:
-  data/outputs/charts/fig9_percapita.csv
-  cgd-general/chart-templates/Chart-template-StackedArea.xlsx
+  data/outputs/charts/fig9_data.csv
+  templates/Chart-template-StackedArea.xlsx
 
 Output:
   data/outputs/charts/Figure_9.xlsx
 
-Pre-req: script 09 must have run to produce fig9_percapita.csv.
+Pre-req: script 09 must have run to produce fig9_data.csv.
 #>
 
 param(
@@ -152,7 +152,7 @@ try { $xl.AutomationSecurity = 3 } catch {}
 try {
 
 Write-Host "`nFigure 9: Per-capita line chart (4 groups, 4 measures) ..."
-$gCsv = Load-CSV "fig9_percapita.csv"
+$gCsv = Load-CSV "fig9_data.csv"
 $wbG  = Open-Template "Chart-template-StackedArea.xlsx"
 
 $wbG.Sheets("Data").Name  = "data_ghg_incLUC"

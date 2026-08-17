@@ -1,6 +1,8 @@
 """
-13_build_summary_tables.py  (v2)
-Build Summary_tables_v2.xlsx — README tab + 12 static summary tabs.
+10_build_summary_tables.py
+Build the paper's summary tables — README tab + 12 static summary tabs.
+Written to Summary_tables_v6.xlsx and copied to Annex_C.xlsx (the committed
+paper deliverable).
 
 v2 changes vs v1:
   - Tab order within each group reversed: GHG incl → GHG excl → CO2 incl → CO2 excl

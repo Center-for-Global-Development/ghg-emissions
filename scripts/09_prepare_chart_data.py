@@ -10,13 +10,18 @@ Inputs (raw):
   CW_HistoricalEmissions_ClimateWatch.csv  (for Fig 1 gas/sector breakdown)
 
 Outputs (to data/outputs/charts/):
-  fig1_pie.csv       — CW 2023 WORLD: gas breakdown + sector breakdown (% shares)
-  fig2_stacked.csv   — OWID World: fossil/industry + LULUCF, 1850–2024, CO2 + GHG tabs
-  fig3_dumbbell.csv  — Cumulative shares 1850–2024 (OWID, PRIMAP, GCP; no EDGAR/CW)
-  fig4_dumbbell.csv  — Cumulative shares 1990–2024 (all sources incl EDGAR, CW)
-  fig5_stacked.csv   — OWID annual by 7 derived country groups, 1850–2024
-  fig6_multiline.csv — Cumulative share by end year (forward cumsum from 1850)
-  fig7_multiline.csv — Cumulative share by start year (reverse cumsum to 2024)
+  fig1_data.csv  — CW 2023 WORLD: gas breakdown + sector breakdown (% shares)
+  fig2_data.csv  — OWID World: CO2/non-CO2 x fossil/LULUCF, 4 series, 1850–2024
+  fig3_data.csv  — Cumulative shares 1850–2024 (OWID, PRIMAP, GCP; no EDGAR/CW)
+  fig4_data.csv  — Cumulative shares 1990–2024 (all sources incl EDGAR, CW)
+  fig5_data.csv  — OWID annual by 7 derived country groups, 1850–2024
+  fig6_data.csv  — Cumulative share by end year (forward cumsum from 1850)
+  fig7_data.csv  — Cumulative share by start year (reverse cumsum to 2024)
+  fig8_data.csv  — Colonial-attributed cumulative shares 1850–2024
+  fig9_data.csv  — Annual per-capita emissions, 4 groups x 4 measures
+  fig10_data.csv / fig11_data.csv — Cumulative per-capita (1850- / 1990-baseline)
+  interactive_[measure].csv (+ _colonial) and interactive_gmst.csv (+ _colonial)
+    — wide-format inputs to script 12 (interactive payload builder)
 
 Dumbbell row structure (figs 3, 4):
   8 data rows = 4 measures x 2 groups (Annex II, Annex I), with spacers between.
@@ -154,20 +159,11 @@ SOURCES_E = {
     "ghg_incLUC": ["OWID", "PRIMAP", "EDGAR", None],
 }
 
-# Sources for Fig K (annual % shares). Annual pct = independent per year, so sources
-# with limited coverage (EDGAR 1970+, CW 1990+) just appear from their first data year.
-SOURCES_K = {
-    "co2_excLUC": ["OWID", "PRIMAP", "GCP_fossil", None],
-    "co2_incLUC": ["OWID", "PRIMAP", "GCP_BLUE", "GCP_OSCAR"],
-    "ghg_excLUC": ["OWID", "PRIMAP", "EDGAR", "ClimateWatch"],
-    "ghg_incLUC": ["OWID", "PRIMAP", "EDGAR", None],
-}
-
 # All source keys used in dumbbell columns
 ALL_SRC_COLS = ["owid", "primap", "gcp_fossil", "gcp_blue", "gcp_oscar", "gcp_luce",
                 "edgar", "cw"]
 
-# Source order used in the wide-format dumbbell_raw_[measure].csv files
+# Source order used in the wide-format interactive_[measure].csv files
 # (and the colonial-attributed _J variants) — the column order in those CSVs
 # must match between as-reported and J so the dynamic chart can swap between them.
 DB_ALL_SOURCES_RAW = ["OWID", "PRIMAP", "GCP_fossil", "GCP_BLUE", "GCP_OSCAR",
@@ -251,7 +247,7 @@ def gmst_share(group, msr, start_yr, end_yr):
 # ===========================================================================
 # Fig 1: PiePair — CW 2023 World gas + sector breakdown
 # ===========================================================================
-print("\nBuilding fig1_pie.csv ...")
+print("\nBuilding fig1_data.csv ...")
 
 world_2023 = cw_raw[cw_raw["Country"] == "WORLD"][["Gas", "Sector", "2023"]].copy()
 world_2023["2023"] = pd.to_numeric(world_2023["2023"], errors="coerce")
@@ -295,50 +291,8 @@ sec_df["breakdown"] = "sector"
 sec_df = sec_df[["breakdown", "category", "value_Mt", "share_pct"]]
 
 fig1 = pd.concat([gas_df, sec_df], ignore_index=True)
-fig1.to_csv(os.path.join(CHART_DIR, "fig1_pie.csv"), index=False, float_format="%.3f")
-print(f"  Written: fig1_pie.csv  ({len(fig1)} rows)")
-
-
-# ===========================================================================
-# Fig 2: StackedArea — OWID World, 1850–2024
-#   Two tabs: CO2 (fossil + LULUCF) and GHGs (fossil/industry + LULUCF)
-# ===========================================================================
-print("\nBuilding fig2_stacked.csv ...")
-
-FIG2_PAIRS = [
-    ("CO2", "co2_excLUC", "co2_incLUC"),
-    ("GHG", "ghg_excLUC", "ghg_incLUC"),
-]
-
-chunks_2 = []
-for msr_label, excl_key, incl_key in FIG2_PAIRS:
-    owid_excl = (
-        grp[(grp["source"] == "OWID") & (grp["group"] == "World") &
-            (grp["measure"] == excl_key) & (grp["year"] >= 1850)]
-        .set_index("year")["value_Mt"]
-    )
-    owid_incl = (
-        grp[(grp["source"] == "OWID") & (grp["group"] == "World") &
-            (grp["measure"] == incl_key) & (grp["year"] >= 1850)]
-        .set_index("year")["value_Mt"]
-    )
-    years_2 = sorted(set(owid_excl.index) | set(owid_incl.index))
-    chunk = pd.DataFrame({
-        "measure":           msr_label,
-        "year":              years_2,
-        "fossil_industry_Mt": [owid_excl.get(y, np.nan) for y in years_2],
-        "lulucf_Mt": [
-            owid_incl.get(y, np.nan) - owid_excl.get(y, np.nan)
-            if not (pd.isna(owid_incl.get(y, np.nan)) or pd.isna(owid_excl.get(y, np.nan)))
-            else np.nan
-            for y in years_2
-        ],
-    })
-    chunks_2.append(chunk)
-
-fig2 = pd.concat(chunks_2, ignore_index=True)
-fig2.to_csv(os.path.join(CHART_DIR, "fig2_stacked.csv"), index=False, float_format="%.3f")
-print(f"  Written: fig2_stacked.csv  ({len(fig2)} rows, {fig2['measure'].nunique()} measures)")
+fig1.to_csv(os.path.join(CHART_DIR, "fig1_data.csv"), index=False, float_format="%.3f")
+print(f"  Written: fig1_data.csv  ({len(fig1)} rows)")
 
 
 # ===========================================================================
@@ -346,7 +300,7 @@ print(f"  Written: fig2_stacked.csv  ({len(fig2)} rows, {fig2['measure'].nunique
 #   Series: CO2 fossil, non-CO2 fossil, CO2 LULUCF, non-CO2 LULUCF
 #   Total stacks to GHG incl. LUC (World, OWID)
 # ===========================================================================
-print("\nBuilding fig2_combined.csv ...")
+print("\nBuilding fig2_data.csv ...")
 
 _src = {}
 for _m in ["co2_excLUC", "co2_incLUC", "ghg_excLUC", "ghg_incLUC"]:
@@ -383,8 +337,8 @@ for y in _yrs2c:
     })
 
 fig2c = pd.DataFrame(rows_2c)
-fig2c.to_csv(os.path.join(CHART_DIR, "fig2_combined.csv"), index=False, float_format="%.3f")
-print(f"  Written: fig2_combined.csv  ({len(fig2c)} rows)")
+fig2c.to_csv(os.path.join(CHART_DIR, "fig2_data.csv"), index=False, float_format="%.3f")
+print(f"  Written: fig2_data.csv  ({len(fig2c)} rows)")
 
 
 # ===========================================================================
@@ -442,15 +396,15 @@ def build_dumbbell(start_yr, end_yr, src_map):
     return df
 
 
-print("\nBuilding fig3_dumbbell.csv (1850–2024) ...")
+print("\nBuilding fig3_data.csv (1850–2024) ...")
 figA = build_dumbbell(1850, 2024, SOURCES_A)
-figA.to_csv(os.path.join(CHART_DIR, "fig3_dumbbell.csv"), index=False, float_format="%.2f")
-print(f"  Written: fig3_dumbbell.csv  ({len(figA)} rows)")
+figA.to_csv(os.path.join(CHART_DIR, "fig3_data.csv"), index=False, float_format="%.2f")
+print(f"  Written: fig3_data.csv  ({len(figA)} rows)")
 
-print("\nBuilding fig4_dumbbell.csv (1990–2024) ...")
+print("\nBuilding fig4_data.csv (1990–2024) ...")
 figB = build_dumbbell(1990, 2024, SOURCES_B)
-figB.to_csv(os.path.join(CHART_DIR, "fig4_dumbbell.csv"), index=False, float_format="%.2f")
-print(f"  Written: fig4_dumbbell.csv  ({len(figB)} rows)")
+figB.to_csv(os.path.join(CHART_DIR, "fig4_data.csv"), index=False, float_format="%.2f")
+print(f"  Written: fig4_data.csv  ({len(figB)} rows)")
 
 
 # ===========================================================================
@@ -465,7 +419,7 @@ print(f"  Written: fig4_dumbbell.csv  ({len(figB)} rows)")
 #   IND       = country IND
 #   Other_nonAI = World - annex_1 - CHN - IND
 # ===========================================================================
-print("\nBuilding fig5_stacked.csv ...")
+print("\nBuilding fig5_data.csv ...")
 
 # European Annex 2 = all Annex 2 except USA, AUS, CAN, JPN, NZL (18 European members).
 # Other Annex 2   = AUS, CAN, JPN, NZL.
@@ -546,8 +500,8 @@ for msr in MEASURES:
     chunks_c.append(pd.DataFrame(rows_c))
 
 figC = pd.concat(chunks_c, ignore_index=True)
-figC.to_csv(os.path.join(CHART_DIR, "fig5_stacked.csv"), index=False, float_format="%.3f")
-print(f"  Written: fig5_stacked.csv  ({len(figC)} rows, {figC['measure'].nunique()} measures)")
+figC.to_csv(os.path.join(CHART_DIR, "fig5_data.csv"), index=False, float_format="%.3f")
+print(f"  Written: fig5_data.csv  ({len(figC)} rows, {figC['measure'].nunique()} measures)")
 
 
 # ===========================================================================
@@ -696,89 +650,15 @@ def build_multiline(sources_map, direction, start_yr=1850):
     return result
 
 
-def build_figK(sources_map, start_yr=1850):
-    """Build figK DataFrame: ANNUAL % share of world emissions per source/group.
-
-    pct_annex2 = annex_2_Mt / (annex_1_Mt + non_annex_1_Mt) * 100  (for each source)
-    pct_annex1 = annex_1_Mt / (annex_1_Mt + non_annex_1_Mt) * 100
-
-    No GMST columns (annual GMST % share is conceptually ambiguous for this chart).
-
-    CSV columns: measure, year, annex2_[src], annex1_[src] per active source.
-    """
-    END_YR = 2024
-    chunks_k = []
-
-    for msr in MEASURES:
-        srcs = sources_map[msr]
-
-        grp_series = {}
-        for src in srcs:
-            if src is None:
-                continue
-            grp_series[src] = {}
-            for ann_grp in ["annex_2", "annex_1", "non_annex_1"]:
-                s = (
-                    grp[(grp["source"] == src) & (grp["group"] == ann_grp) &
-                        (grp["measure"] == msr)]
-                    .set_index("year")["value_Mt"]
-                    .sort_index()
-                )
-                grp_series[src][ann_grp] = s
-
-        all_years = sorted(
-            y for y in set().union(*[s.index for src_d in grp_series.values()
-                                      for s in src_d.values()])
-            if start_yr <= y <= END_YR
-        ) if grp_series else []
-
-        rows_k = []
-        for y in all_years:
-            row = {"measure": msr, "year": y}
-            for src in srcs:
-                if src is None:
-                    continue
-                ann2     = grp_series[src]["annex_2"].get(y, np.nan)
-                ann1     = grp_series[src]["annex_1"].get(y, np.nan)
-                non_ann1 = grp_series[src]["non_annex_1"].get(y, np.nan)
-                world = ann1 + non_ann1 if not (pd.isna(ann1) or pd.isna(non_ann1)) else np.nan
-                row[f"annex2_{src}"] = ann2 / world * 100 if (pd.notna(world) and world > 0) else np.nan
-                row[f"annex1_{src}"] = ann1 / world * 100 if (pd.notna(world) and world > 0) else np.nan
-            rows_k.append(row)
-
-        chunks_k.append(pd.DataFrame(rows_k))
-
-    result = pd.concat(chunks_k, ignore_index=True)
-    base_cols = ["measure", "year"]
-    seen_srcs = []
-    for msr in MEASURES:
-        for src in sources_map[msr]:
-            if src is not None and src not in seen_srcs:
-                seen_srcs.append(src)
-    src_cols = [f"{pfx}_{src}" for src in seen_srcs
-                for pfx in ["annex2", "annex1"] if f"{pfx}_{src}" in result.columns]
-    return result.reindex(columns=base_cols + src_cols)
-
-
-print("\nBuilding fig6_multiline.csv (annual MtCO2e; FigD = forward cumul from 1850) ...")
+print("\nBuilding fig6_data.csv (annual MtCO2e; FigD = forward cumul from 1850) ...")
 figD = build_multiline(SOURCES_D, "forward", start_yr=1850)
-figD.to_csv(os.path.join(CHART_DIR, "fig6_multiline.csv"), index=False, float_format="%.3f")
-print(f"  Written: fig6_multiline.csv  ({len(figD)} rows, {figD['measure'].nunique()} measures)")
+figD.to_csv(os.path.join(CHART_DIR, "fig6_data.csv"), index=False, float_format="%.3f")
+print(f"  Written: fig6_data.csv  ({len(figD)} rows, {figD['measure'].nunique()} measures)")
 
-print("\nBuilding fig7_multiline.csv (annual MtCO2e; FigE = reverse cumul to 2024) ...")
+print("\nBuilding fig7_data.csv (annual MtCO2e; FigE = reverse cumul to 2024) ...")
 figE = build_multiline(SOURCES_E, "reverse", start_yr=1850)
-figE.to_csv(os.path.join(CHART_DIR, "fig7_multiline.csv"), index=False, float_format="%.3f")
-print(f"  Written: fig7_multiline.csv  ({len(figE)} rows, {figE['measure'].nunique()} measures)")
-
-print("\nBuilding fig13_multiline.csv (annual % shares; FigK) ...")
-figK = build_figK(SOURCES_K, start_yr=1850)
-figK.to_csv(os.path.join(CHART_DIR, "fig13_multiline.csv"), index=False, float_format="%.3f")
-print(f"  Written: fig13_multiline.csv  ({len(figK)} rows, {figK['measure'].nunique()} measures)")
-
-print("\nBuilding fig12_multiline.csv (annual % shares, ghg_incLUC only; Figure 12) ...")
-fig12_multiline = figK[figK["measure"] == "ghg_incLUC"].copy()
-fig12_multiline.to_csv(os.path.join(CHART_DIR, "fig12_multiline.csv"), index=False, float_format="%.3f")
-print(f"  Written: fig12_multiline.csv  ({len(fig12_multiline)} rows)")
+figE.to_csv(os.path.join(CHART_DIR, "fig7_data.csv"), index=False, float_format="%.3f")
+print(f"  Written: fig7_data.csv  ({len(figE)} rows, {figE['measure'].nunique()} measures)")
 
 
 # ===========================================================================
@@ -790,7 +670,7 @@ print(f"  Written: fig12_multiline.csv  ({len(fig12_multiline)} rows)")
 # the denominator (population) is correctly group-summed, not taken from any
 # single-country population figure.
 # ===========================================================================
-print("\nBuilding fig9_percapita.csv ...")
+print("\nBuilding fig9_data.csv ...")
 
 # Four measures: GHG incl/excl LULUCF and CO2 incl/excl LULUCF (OWID only).
 # Groups match FigC 8-group split. One row per (measure, year).
@@ -861,8 +741,8 @@ for yr, ydf in owid_g.groupby("year"):
 
 figG = pd.DataFrame(g_rows)
 figG = figG[figG["year"] >= 1850]
-figG.to_csv(os.path.join(CHART_DIR, "fig9_percapita.csv"), index=False, float_format="%.3f")
-print(f"  Written: fig9_percapita.csv  ({len(figG)} rows, 4 measures × 4 groups)")
+figG.to_csv(os.path.join(CHART_DIR, "fig9_data.csv"), index=False, float_format="%.3f")
+print(f"  Written: fig9_data.csv  ({len(figG)} rows, 4 measures × 4 groups)")
 
 
 # ===========================================================================
@@ -871,7 +751,7 @@ print(f"  Written: fig9_percapita.csv  ({len(figG)} rows, 4 measures × 4 groups
 # For each country-year, emissions and GMST contributions are reassigned to
 # whoever controlled the territory at the time using Carbon Brief's
 # territorial-rule coefficients (data/outputs/colonial_attribution_long.csv,
-# generated by scripts/11_extract_colonial.py). Coefficients sum to ~1.0 per
+# generated by scripts/07_extract_colonial.py). Coefficients sum to ~1.0 per
 # territory-year and 'Independent' weights stay with the territory itself.
 #
 # Methodology:
@@ -883,13 +763,13 @@ print(f"  Written: fig9_percapita.csv  ({len(figG)} rows, 4 measures × 4 groups
 #                 Linear approximation: see footnote in
 #                 docs/colonial_attribution_method.md.
 # ===========================================================================
-print("\nBuilding fig8_dumbbell.csv (colonial-attributed, 1850-2024) ...")
+print("\nBuilding fig8_data.csv (colonial-attributed, 1850-2024) ...")
 
 ATTR_PATH = os.path.join(OUT_DIR, "colonial_attribution_long.csv")
 if not os.path.exists(ATTR_PATH):
     raise RuntimeError(
         "colonial_attribution_long.csv not found. "
-        "Run scripts/11_extract_colonial.py before this script."
+        "Run scripts/07_extract_colonial.py before this script."
     )
 attr_df = pd.read_csv(ATTR_PATH)
 attr_df["year"] = attr_df["year"].astype(int)
@@ -1025,7 +905,7 @@ def gmst_share_J(group_df, measure):
     if w_val == 0 or pd.isna(w_val): return np.nan
     return g_val / w_val * 100
 
-# --- 6. Build fig8_dumbbell.csv (mirrors fig3_dumbbell.csv shape exactly) ---
+# --- 6. Build fig8_data.csv (mirrors fig3_data.csv shape exactly) ---
 SOURCES_J = SOURCES_A   # 1850 baseline -> EDGAR (1970+) and CW (1990+) blank, like Fig A.
 
 dumbbell_measures_J = [
@@ -1054,17 +934,17 @@ for idx, (msr, msr_label) in enumerate(dumbbell_measures_J):
 
 cols_J = ["y_pos", "label"] + ALL_SRC_COLS + ["gmst_ref"]
 figJ = pd.DataFrame(rows_J, columns=cols_J)
-figJ.to_csv(os.path.join(CHART_DIR, "fig8_dumbbell.csv"),
+figJ.to_csv(os.path.join(CHART_DIR, "fig8_data.csv"),
              index=False, float_format="%.2f")
-print(f"  Written: fig8_dumbbell.csv  ({len(figJ)} rows)")
+print(f"  Written: fig8_data.csv  ({len(figJ)} rows)")
 
 
 # ===========================================================================
-# Fig J dynamic raw tabs: colonial-attributed annual MtCO2e per source/group,
-# wide format, mirroring dumbbell_raw_[measure].csv exactly so that the
-# dynamic chart can swap between as-reported and colonial via a toggle.
+# Interactive colonial tabs: colonial-attributed annual MtCO2e per source/group,
+# wide format, mirroring interactive_[measure].csv exactly so that the
+# interactive can swap between as-reported and colonial via a toggle.
 # ===========================================================================
-print("\nBuilding dumbbell_raw_[measure]_J.csv (colonial-attributed) ...")
+print("\nBuilding interactive_[measure]_colonial.csv (colonial-attributed) ...")
 
 # Annual annex aggregation of em_J: (iso, source, measure, year) -> per-group totals
 em_J_grouped = em_J.merge(
@@ -1101,13 +981,13 @@ for msr in MEASURES:
             row_r[col_name] = float(v) if not pd.isna(v) else np.nan
         rows_raw.append(row_r)
     raw_df = pd.DataFrame(rows_raw)
-    raw_df.to_csv(os.path.join(CHART_DIR, f"dumbbell_raw_{msr}_J.csv"),
+    raw_df.to_csv(os.path.join(CHART_DIR, f"interactive_{msr}_colonial.csv"),
                   index=False, float_format="%.3f")
-    print(f"  Written: dumbbell_raw_{msr}_J.csv  ({len(raw_df)} rows, {len(raw_df.columns)} cols)")
+    print(f"  Written: interactive_{msr}_colonial.csv  ({len(raw_df)} rows, {len(raw_df.columns)} cols)")
 
 # GMST per-measure cumulative °C, colonial-attributed.
-# Same column layout as dumbbell_gmst.csv: year, then a2/a1/world × 4 measures.
-print("Building dumbbell_gmst_J.csv (colonial-attributed cumulative GMST) ...")
+# Column layout: year, then a2/a1/world × 4 measures.
+print("Building interactive_gmst_colonial.csv (colonial-attributed cumulative GMST) ...")
 
 gmst_J_grouped = gmst_J.merge(
     country_groups_df[["iso_code", "annex_1", "annex_2"]], on="iso_code", how="inner",
@@ -1123,7 +1003,7 @@ def _gmst_grp_year(df, value_col, flag_col, msr):
     )
 
 def _write_gmst_country_agg(df, value_col, out_name):
-    """Write country-level cumulative-GMST sums in dumbbell_gmst.csv format."""
+    """Write country-level cumulative-GMST sums (year | a2/a1/world x 4 measures)."""
     cols = {}
     for msr in MEASURES:
         a2  = _gmst_grp_year(df, value_col, "annex_2",     msr)
@@ -1142,27 +1022,27 @@ def _write_gmst_country_agg(df, value_col, out_name):
     print(f"  Written: {out_name}  ({len(rows)} rows, {len(cols)+1} cols)")
 
 # Colonial-attributed cumulative GMST.
-_write_gmst_country_agg(gmst_J_grouped, "value_C", "dumbbell_gmst_J.csv")
+_write_gmst_country_agg(gmst_J_grouped, "value_C", "interactive_gmst_colonial.csv")
 
 # As-reported cumulative GMST aggregated the same way (country-level -> groups).
-# Used by FigJ_dynamic V3=0 path so that V3=0 vs V3=1 differ only by the
-# colonial coefficients, not by the GMST aggregation method. Note this differs
-# from dumbbell_gmst.csv (which uses Jones et al.'s pre-aggregated GLOBAL /
-# ANNEXII rows) by ~0.5-1pp; the difference is intrinsic to the Jones data.
+# Used by the interactive's as-reported path so the colonial toggle changes only
+# the coefficients, not the GMST aggregation method. Country-level aggregation
+# differs from Jones et al.'s pre-aggregated GLOBAL/ANNEXII rows by ~0.5-1pp;
+# the difference is intrinsic to the Jones data.
 gmst_long_g = gmst_long.merge(
     country_groups_df[["iso_code", "annex_1", "annex_2"]], on="iso_code", how="inner",
 )
 gmst_long_g["non_annex_1"] = (gmst_long_g["annex_1"] == 0).astype(int)
-_write_gmst_country_agg(gmst_long_g, "value_Mt", "dumbbell_gmst_asis.csv")
+_write_gmst_country_agg(gmst_long_g, "value_Mt", "interactive_gmst.csv")
 
 
 # ===========================================================================
-# Dumbbell raw data: wide-format annual MtCO2e per source/group, for
-# dynamic-date FigA/B (Excel SUMIFS over user-specified start/end years).
+# Interactive raw data: wide-format annual MtCO2e per source/group — inputs
+# to script 12 (the interactive dumbbell's payload builder).
 # One CSV per measure; columns: year, annex2_[src], annex1_[src], nona1_[src]
 # for all 8 sources. NaN where a source has no data for that measure/year.
 # ===========================================================================
-print("\nBuilding dumbbell_raw_[measure].csv and dumbbell_gmst.csv ...")
+print("\nBuilding interactive_[measure].csv ...")
 
 for msr in MEASURES:
     ann_series = {}
@@ -1187,38 +1067,9 @@ for msr in MEASURES:
             row_r[col_name] = float(v) if not pd.isna(v) else np.nan
         rows_raw.append(row_r)
     raw_df = pd.DataFrame(rows_raw)
-    raw_df.to_csv(os.path.join(CHART_DIR, f"dumbbell_raw_{msr}.csv"),
+    raw_df.to_csv(os.path.join(CHART_DIR, f"interactive_{msr}.csv"),
                   index=False, float_format="%.3f")
-    print(f"  Written: dumbbell_raw_{msr}.csv  ({len(raw_df)} rows, {len(raw_df.columns)} cols)")
-
-# GMST per-measure cumulative °C — reads raw CSV directly so each measure uses
-# the correct gas/component combination (not just 3-GHG/Total for all).
-# Column order: year | a2/a1/world × 4 measures (co2_excLUC, co2_incLUC, ghg_excLUC, ghg_incLUC)
-# VLOOKUP col indices in Excel: co2_excLUC→2/3/4, co2_incLUC→5/6/7, ghg_excLUC→8/9/10, ghg_incLUC→11/12/13
-GMST_MEASURE_MAP = {
-    "co2_excLUC": ("CO[2]",  "Fossil"),
-    "co2_incLUC": ("CO[2]",  "Total"),
-    "ghg_excLUC": ("3-GHG",  "Fossil"),
-    "ghg_incLUC": ("3-GHG",  "Total"),
-}
-GMST_GROUP_MAP = [("ANNEXII", "annex2"), ("ANNEXI", "annex1"), ("GLOBAL", "world")]
-gmst_raw = pd.read_csv(os.path.join(RAW_DIR, "GMST_response_1851-2024.csv"))
-all_gmst_series = {}
-for msr, (gas, comp) in GMST_MEASURE_MAP.items():
-    for iso3, pfx in GMST_GROUP_MAP:
-        sub = gmst_raw[
-            (gmst_raw["ISO3"] == iso3) & (gmst_raw["Gas"] == gas) &
-            (gmst_raw["Component"] == comp)
-        ].set_index("Year")["Data"]
-        all_gmst_series[f"{pfx}_{msr}"] = sub
-gmst_years = sorted(set().union(*[s.index for s in all_gmst_series.values()]))
-gmst_rows = [{"year": y, **{
-    col: (float(s.at[y]) if y in s.index and not pd.isna(s.at[y]) else np.nan)
-    for col, s in all_gmst_series.items()
-}} for y in gmst_years]
-pd.DataFrame(gmst_rows).to_csv(os.path.join(CHART_DIR, "dumbbell_gmst.csv"),
-                                index=False, float_format="%.6f")
-print(f"  Written: dumbbell_gmst.csv  ({len(gmst_rows)} rows, {len(all_gmst_series)+1} cols)")
+    print(f"  Written: interactive_{msr}.csv  ({len(raw_df)} rows, {len(raw_df.columns)} cols)")
 
 # ===========================================================================
 # Fig H: Cumulative per-capita emissions as % of world average
@@ -1245,7 +1096,7 @@ def build_figH(start_yr, end_yr=2024):
     definition; see docs/cumulative_per_capita_methods.md §Group aggregation).
     """
     _fignum = {1850: "fig10", 1990: "fig11"}
-    print(f"\nBuilding {_fignum[start_yr]}_percapita_cumulative_{start_yr}.csv ...")
+    print(f"\nBuilding {_fignum[start_yr]}_data.csv ...")
 
     # --- Emissions: owid_long.csv (co2_incLUC is pipeline-corrected) ---
     ol = pd.read_csv(os.path.join(OUT_DIR, "owid_long.csv"), low_memory=False)
@@ -1410,9 +1261,9 @@ def build_figH(start_yr, end_yr=2024):
             y += 1
 
     df = pd.DataFrame(out_rows, columns=["y_pos", "label", "method_a", "method_b", "method_c", "abs_share"])
-    out_path = os.path.join(CHART_DIR, f"{_fignum[start_yr]}_percapita_cumulative_{start_yr}.csv")
+    out_path = os.path.join(CHART_DIR, f"{_fignum[start_yr]}_data.csv")
     df.to_csv(out_path, index=False, float_format="%.2f")
-    print(f"  Written: {_fignum[start_yr]}_percapita_cumulative_{start_yr}.csv  ({len(df)} rows, source=owid_long.csv)")
+    print(f"  Written: {_fignum[start_yr]}_data.csv  ({len(df)} rows, source=owid_long.csv)")
     return df
 
 

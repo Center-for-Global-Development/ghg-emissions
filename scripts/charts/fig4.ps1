@@ -4,13 +4,13 @@ figB.ps1
 Generate Figure_4.xlsx -- cumulative shares dumbbell, 1990–2024.
 
 Input:
-  data/outputs/charts/fig4_dumbbell.csv
-  cgd-general/chart-templates/Chart-template-Dumbbell.xlsx
+  data/outputs/charts/fig4_data.csv
+  templates/Chart-template-Dumbbell.xlsx
 
 Output:
   data/outputs/charts/Figure_4.xlsx
 
-Pre-req: scripts 01–09 must have run to produce fig4_dumbbell.csv.
+Pre-req: scripts 01–09 must have run to produce fig4_data.csv.
 #>
 
 param(
@@ -46,7 +46,7 @@ $em = [char]0x2013
 try {
 
 Write-Host "`nFigure 4: Dumbbell 1990-2024 ..."
-Build-Dumbbell "fig4_dumbbell.csv" "Figure_4.xlsx" `
+Build-Dumbbell "fig4_data.csv" "Figure_4.xlsx" `
     "Emissions shares and contribution to increase in GMST (1990${em}2024)"
 
 } catch {

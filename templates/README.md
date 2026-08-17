@@ -9,8 +9,8 @@ axis and legend styling) and are consumed by the PowerShell chart scripts in
 
 | Template | Used by |
 |----------|---------|
-| `Chart-template-Dumbbell.xlsx` | fig3, fig4, fig8, fig10, fig11, figA_dynamic |
-| `Chart-template-MultiLine.xlsx` | fig6, fig7, fig12, fig13 |
+| `Chart-template-Dumbbell.xlsx` | fig3, fig4, fig8, fig10, fig11 |
+| `Chart-template-MultiLine.xlsx` | fig6, fig7 |
 | `Chart-template-PiePair.xlsx` | fig1 |
 | `Chart-template-StackedArea.xlsx` | fig2, fig5, fig9 |
 

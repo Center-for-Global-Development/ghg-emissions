@@ -5,7 +5,7 @@ Converted from 01_owid_extract.R (archived to scripts/archive/).
 Produces three outputs:
 
   data/outputs/owid_long.csv
-    Long-format annual emissions for the emissions pipeline (07_stack_and_aggregate.py).
+    Long-format annual emissions for the emissions pipeline (08_stack_and_aggregate.py).
     Columns: source, iso_code, year, measure, value_Mt
     Measures: co2_excLUC, co2_incLUC, ghg_excLUC, ghg_incLUC
 

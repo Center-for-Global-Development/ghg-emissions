@@ -1,8 +1,8 @@
 /* Interactive dumbbell: Annex I / Annex II shares of world cumulative emissions.
- * Data payload built by scripts/14_prepare_interactive_dumbbell.py.
- * Share maths mirrors the discontinued Figure_A_dynamic.xlsx (SUMIFS over the
- * selected year range; world = annex 1 + non-annex 1; GMST via cumulative
- * differencing). QA'd against static Figures 3/4/8.
+ * Data payload built by scripts/12_prepare_interactive_dumbbell.py.
+ * Share maths mirrors the discontinued dynamic-date dumbbell workbook (SUMIFS
+ * over the selected year range; world = annex 1 + non-annex 1; GMST via
+ * cumulative differencing). QA'd against static Figures 3/4/8.
  */
 (function () {
   "use strict";
