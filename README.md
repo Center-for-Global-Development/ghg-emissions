@@ -10,17 +10,6 @@ The pipeline standardises every source to a common schema, aggregates to
 UNFCCC country groups, and produces the paper's figures, summary tables, and
 an interactive source-comparison chart.
 
-## Interactive chart
-
-An interactive dumbbell chart comparing each source's estimate of cumulative
-emission shares (Annex I / Annex II / non-Annex I), with a measure selector,
-colonial-attribution toggle, year-range slider, and a custom country-group
-picker is at `ghg-emissions-interactive/`.
-
-Embed URL, configuration parameters, colours, payload sizes and the toolkit
-delivery checklist are documented in
-[`ghg-emissions-interactive/README.md`](ghg-emissions-interactive/README.md).
-
 ## Data sources
 
 | Dataset | Source | Coverage |
@@ -79,6 +68,34 @@ are missing, which recovers 13,539 country-year rows across 181 countries —
 largest by volume: Indonesia (~9.1 Gt), Myanmar (~8.1 Gt), China (~7.1 Gt).
 Our OWID `co2_incLUC` figures therefore differ from OWID's published column by
 design.
+
+**World totals here are the sum of countries, not any source's "World" row.**
+Every share in this analysis uses `annex_1 + non_annex_1` as the denominator.
+Sources define their own World rows differently, and most include
+international aviation and shipping, which none of them allocate to individual
+countries. Summing countries keeps the denominator consistent across sources;
+the trade-off is that shares are of country-attributable emissions only, with
+bunker fuels outside the total.
+
+**Colonial attribution** (Figure 8, and the interactive's toggle) reassigns
+each country-year's emissions to whoever controlled the territory that year,
+using Carbon Brief's (territory, year, power) coefficients. The coefficients
+sum to 1 per territory-year, so world totals are unchanged; territories absent
+from the database keep their own emissions. GMST is reattributed by
+differencing each cumulative series into annual increments, reassigning those,
+and re-cumulating — a linear approximation that behaves well for cumulative
+1850–2024 comparisons but should not be read year by year.
+
+## Interactive chart
+
+An interactive dumbbell chart comparing each source's estimate of cumulative
+emission shares (Annex I / Annex II / non-Annex I), with a measure selector,
+colonial-attribution toggle, year-range slider, and a custom country-group
+picker is at `ghg-emissions-interactive/`.
+
+Embed URL, configuration parameters, colours, payload sizes and the toolkit
+delivery checklist are documented in
+[`ghg-emissions-interactive/README.md`](ghg-emissions-interactive/README.md).
 
 ## How to reproduce
 
@@ -172,5 +189,5 @@ ghg-emissions/
 
 ## Contact
 
-Edward Wickstead, Center for Global Development —
+Edward Wickstead (ewickstead@cgdev.org) —
 [edward-wickstead-cgd](https://github.com/edward-wickstead-cgd)
