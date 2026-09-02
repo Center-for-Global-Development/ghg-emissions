@@ -20,8 +20,8 @@ CC BY 4.0 permits redistribution).
 | `Guetschow_et_al_2025a-PRIMAP-hist_v2.7_final_no_extrap_no_rounding_22-Aug-2025.csv` | PRIMAP-hist v2.7 (Gütschow et al. 2025) | 1750–2024, all GHGs | Wide format; country ISO3 only, no global/regional aggregates |
 | `EDGAR_2025_GHG_booklet_2025.xlsx` | EDGAR Community GHG Database, JRC/IEA 2025 Report | 1970–2024 (GHG); 1990–2024 (LULUCF) | Mt CO2eq/yr, AR5 GWPs. Sheets used: `GHG_by_sector_and_country`, `LULUCF_countries` |
 | `GMST_response_1851-2024.csv` | Jones et al. (National contributions to climate change), v2025.1 | 1851–2024 | Temperature response (°C) by country/group |
-| `National_Fossil_Carbon_Emissions_2025_v0.3.xlsx` | Global Carbon Project (GCB 2025) | 1750–2024, fossil CO2 | MtC; bunker fuels excluded from national estimates; sheet "Territorial Emissions" |
-| `National_LandUseChange_Carbon_Emissions_2025v0.2.xlsx` | Global Carbon Project (GCB 2025) | LUC CO2 by country | MtC; sheets: BLUE, OSCAR, LUCE |
+| `National_Fossil_Carbon_Emissions_2025_v0.3.xlsx` | Global Carbon Project (GCB 2025) | 1750–2024, fossil CO2 | **Committed.** MtC; bunker fuels excluded from national estimates; sheet "Territorial Emissions" |
+| `National_LandUseChange_Carbon_Emissions_2025v0.2.xlsx` | Global Carbon Project (GCB 2025) | LUC CO2 by country | **Committed.** MtC; sheets: BLUE, OSCAR, LUCE |
 | `territorial_rule_database_1850_2023.csv` | Carbon Brief, [colonial-emissions-data](https://github.com/carbonbrief/colonial-emissions-data) | 1850–2023 | 159 territories, 16 colonial-power columns + Independent; coefficients per (territory, year) sum to ~1.0; Yugoslavia row (blank ISO) dropped |
 | `population.csv` | Our World in Data (HYDE; Gapminder; UN WPP) | 10,000 BCE–2023 | Long-run population; used for the Ireland pre-1950 patch ("Ireland (whole island)" rows, 1850–1920) |
 | `population.metadata.json` | Our World in Data | — | Provenance metadata for population.csv |

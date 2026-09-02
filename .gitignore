@@ -5,6 +5,12 @@ data/raw/*
 # Exception: Climate Watch has no stable direct download link (CC BY 4.0,
 # redistribution permitted with attribution), so the extract we used is committed.
 !data/raw/CW_HistoricalEmissions_ClimateWatch.csv
+# Exception: the two GCP spreadsheets sit behind a licence-accept click-through
+# that cannot be scripted (CC BY 4.0, redistribution permitted with attribution).
+# Committing them removes the last manual step, so a fresh clone reproduces with
+# no hand-downloads. 1.7 MB combined.
+!data/raw/National_Fossil_Carbon_Emissions_2025_v0.3.xlsx
+!data/raw/National_LandUseChange_Carbon_Emissions_2025v0.2.xlsx
 
 # --- Large regenerable pipeline outputs ---
 data/outputs/*.csv

@@ -26,14 +26,27 @@ an interactive source-comparison chart.
 [`data/raw/README.md`](data/raw/README.md) carries the full download table for
 these and for the other data used in the analysis — the territorial rule
 database, OWID population and the Maddison Project Database — with the version
-used, download date, licence and link per file. Raw files are not committed
-(the set is ~200 MB and PRIMAP-hist alone exceeds GitHub's 100 MB per-file
-limit); `scripts/00_download_raw.py` fetches everything that offers a direct
-link.
+used, download date, licence and link per file.
+
+Most raw files are not committed: the set is ~200 MB and PRIMAP-hist alone
+exceeds GitHub's 100 MB per-file limit. `scripts/00_download_raw.py` fetches
+every source that offers a stable direct link. The three that do not — Climate
+Watch, which has no direct link, and the two Global Carbon Project
+spreadsheets, which sit behind a licence-accept click-through — are committed
+in `data/raw/`, so **a fresh clone runs with no manual downloads**. All three
+are CC BY 4.0, which permits redistribution with attribution.
 
 Two sources update their published files in place (OWID, Climate Watch) so
-a fresh download can differ from the vintage this analysis uses. The committed
-outputs were generated from the versions recorded in `data/raw/README.md`.
+a fresh download can differ from the vintage this analysis uses, and ICOS now
+serves v1.0 of the Global Carbon Project spreadsheets where this analysis used
+v0.3 and v0.2. The committed outputs were generated from the versions recorded
+in `data/raw/README.md`.
+
+**The complete set of raw data files, at the exact versions used in the
+analysis, is available for download from the working paper's page on
+cgdev.org.** Use that in preference to `00_download_raw.py` if you want to
+reproduce the committed outputs exactly rather than re-run the analysis against
+current data.
 
 ## Measures and source coverage
 
@@ -137,8 +150,8 @@ has to run that stage).
 ```bash
 pip install -r requirements.txt
 
-# Fetch raw data (GCP requires one manual licence-accept download — the
-# script prints instructions; see data/raw/README.md)
+# Fetch raw data (no manual steps — the three sources that cannot be
+# fetched automatically are committed; see data/raw/README.md)
 python scripts/00_download_raw.py
 
 # Run the pipeline: extracts -> colonial coefficients -> stack/aggregate ->

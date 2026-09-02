@@ -3,14 +3,14 @@
 Fetch the raw source files into data/raw/.
 
 Downloads every source that offers a stable direct link, skipping files that
-are already present. Two sources cannot be fetched automatically and are
-reported at the end:
+are already present. Three sources cannot be fetched automatically, and all
+three are committed in data/raw/, so a fresh clone needs no manual downloads:
 
-  - Global Carbon Budget national emissions (ICOS requires a licence-accept
-    click-through; ICOS also now serves v1.0 where this analysis used
-    v0.3/v0.2 — see data/raw/README.md)
-  - Climate Watch (no stable direct link) — already committed in data/raw/
-    as the single redistribution exception (CC BY 4.0)
+  - Global Carbon Budget national emissions, fossil and land-use change
+    (ICOS requires a licence-accept click-through)
+  - Climate Watch (no stable direct link)
+
+All three are CC BY 4.0, which permits redistribution with attribution.
 
 Note on reproducibility: OWID updates its published files in place, so a fresh
 download may not match the vintage used for the committed outputs. The
@@ -69,13 +69,13 @@ DIRECT = [
 MANUAL = [
     ("National_Fossil_Carbon_Emissions_2025_v0.3.xlsx",
      "https://www.icos-cp.eu/impact/science/global-carbon-budget/2025",
-     "Accept the licence and download the National Fossil Carbon Emissions "
-     "spreadsheet. ICOS now serves v1.0; this analysis used v0.3 — small "
-     "differences from the committed outputs are possible."),
+     "Already committed in data/raw/ — nothing to do unless you deleted it. "
+     "ICOS serves these behind a licence-accept click-through and now offers "
+     "v1.0; this analysis used v0.3."),
     ("National_LandUseChange_Carbon_Emissions_2025v0.2.xlsx",
      "https://www.icos-cp.eu/impact/science/global-carbon-budget/2025",
-     "Accept the licence and download the National Land Use Change Carbon "
-     "Emissions spreadsheet. ICOS now serves v1.0; this analysis used v0.2."),
+     "Already committed in data/raw/ — nothing to do unless you deleted it. "
+     "ICOS now offers v1.0; this analysis used v0.2."),
     ("CW_HistoricalEmissions_ClimateWatch.csv",
      "https://www.climatewatchdata.org/ghg-emissions",
      "Already committed in data/raw/ — nothing to do unless you deleted it. "
