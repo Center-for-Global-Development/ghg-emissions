@@ -1,0 +1,34 @@
+Third-party data — Center for Global Development is not the licensor
+=====================================================================
+
+Three raw source files are committed in this directory. They are the work of
+other organisations, redistributed here unchanged because they cannot be
+fetched by script. The MIT licence at the root of this repository does not
+apply to them, and neither CGD nor this repository grants any rights in them.
+
+Each is licensed by its publisher under the Creative Commons Attribution 4.0
+International License (CC BY 4.0), which permits redistribution, including
+commercially, with attribution:
+
+    https://creativecommons.org/licenses/by/4.0/
+
+  CW_HistoricalEmissions_ClimateWatch.csv
+      Climate Watch Historical GHG Emissions, World Resources Institute.
+      1990-2023 release, downloaded 20 April 2026.
+      https://www.climatewatchdata.org/ghg-emissions
+
+  National_Fossil_Carbon_Emissions_2025_v0.3.xlsx
+      Global Carbon Project, Global Carbon Budget 2025, national fossil
+      emissions, v0.3. Downloaded 19 February 2026.
+      https://www.icos-cp.eu/impact/science/global-carbon-budget/2025
+
+  National_LandUseChange_Carbon_Emissions_2025v0.2.xlsx
+      Global Carbon Project, Global Carbon Budget 2025, national land-use
+      change emissions, v0.2. Downloaded 19 February 2026.
+      https://www.icos-cp.eu/impact/science/global-carbon-budget/2025
+
+The remaining sources used by this analysis are not committed here. Their
+licences, versions and download links are recorded in README.md in this
+directory. Two are worth noting: PRIMAP-hist is CC BY-NC-SA 4.0
+(non-commercial, share-alike), and the Carbon Brief territorial rule database
+states no licence at all. Both are linked rather than redistributed.

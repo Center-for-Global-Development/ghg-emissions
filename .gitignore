@@ -1,6 +1,7 @@
 # --- Raw source data — download links in README; see data/raw/README.md ---
 data/raw/*
 !data/raw/README.md
+!data/raw/LICENSE
 !data/raw/.gitkeep
 # Exception: Climate Watch has no stable direct download link (CC BY 4.0,
 # redistribution permitted with attribution), so the extract we used is committed.

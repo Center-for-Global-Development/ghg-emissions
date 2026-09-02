@@ -115,6 +115,7 @@ delivery checklist are documented in
 ```
 ghg-emissions/
   README.md                  # this file
+  LICENSE                    # MIT — governs except where a subdirectory overrides
   TRACKING.md                # analytics event inventory
   main.py                    # pipeline runner
   requirements.txt
@@ -123,7 +124,8 @@ ghg-emissions/
   data/
     country_groups.csv       # curated group membership
     raw/                     # raw sources (download links in its README)
-    outputs/
+      LICENSE                # third-party notice — CGD is not the licensor
+    outputs/                 # CC BY-NC-SA 4.0 (see its LICENSE)
       Annex_C.xlsx           # summary tables
       charts/                # chart-input CSVs + Figure_1..11.xlsx
   scripts/
@@ -138,7 +140,7 @@ ghg-emissions/
     12_prepare_interactive_dumbbell.py
     charts/                  # PowerShell + Excel COM figure scripts
   templates/                 # vendored CGD chart templates (see its README)
-  ghg-emissions-interactive/ # the interactive (page code + data payloads)
+  ghg-emissions-interactive/ # the interactive — CC BY-NC-SA 4.0 (see its LICENSE)
 ```
 
 ## How to reproduce
@@ -198,6 +200,33 @@ workbook that is not published, and cannot run from a clean clone.
 - `countries_annual.csv`
 - `groups_summary.csv`
 - `all_sources_stacked.csv`
+
+## Licence
+
+This repository carries three licences, because it holds three different kinds
+of thing.
+
+| Path | Licence | What it covers |
+|------|---------|----------------|
+| Repository root and everything not listed below | MIT | The pipeline scripts, `main.py`, the chart templates and the documentation — CGD's own work |
+| `ghg-emissions-interactive/` | CC BY-NC-SA 4.0 | The interactive and its data payloads |
+| `data/outputs/` | CC BY-NC-SA 4.0 | Chart data, figure workbooks and the Annex C tables |
+| `data/raw/` | Third-party, CC BY 4.0 | Three committed source files that are not CGD's work — see `data/raw/LICENSE` |
+
+**Precedence:** the MIT licence at the repository root governs, except where a
+subdirectory contains its own `LICENSE` file, which governs that directory and
+everything beneath it. GitHub's licence detection only reads the root, so the
+repository is labelled MIT in the sidebar; the table above is the full picture.
+
+**Why the outputs are more restrictive than the code.** They incorporate values
+derived from PRIMAP-hist, which is licensed CC BY-NC-SA 4.0. Its ShareAlike
+term requires adapted material to be released under the same licence, and its
+NonCommercial term carries across with it. The scripts contain no source data,
+so that obligation does not reach them — anyone is free to take the MIT-licensed
+pipeline, download the sources themselves and generate their own outputs.
+
+Attribution for every source, with versions, download dates and links, is in
+[`data/raw/README.md`](data/raw/README.md).
 
 ## Contact
 
