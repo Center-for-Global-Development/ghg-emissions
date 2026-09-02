@@ -40,8 +40,7 @@ import pandas as pd
 SCRIPTS_DIR = os.path.dirname(os.path.abspath(__file__))
 QA_DIR      = os.path.dirname(SCRIPTS_DIR)
 RAW_DIR     = os.path.join(QA_DIR, "data", "raw")
-_BOOKLET_PRIMARY = os.path.join(RAW_DIR, "EDGAR_2025_GHG_booklet_2025.xlsx")
-_BOOKLET_FALLBACK = "c:/tmp/edgar_booklet_tmp.xlsx"   # temp copy; used if primary is locked
+BOOKLET = os.path.join(RAW_DIR, "EDGAR_2025_GHG_booklet_2025.xlsx")
 OUT         = os.path.join(QA_DIR, "data", "outputs", "edgar_long.csv")
 
 NON_COUNTRY = {"AIR", "SEA", "WORLD", "EU27BX"}
@@ -53,11 +52,13 @@ GHG_LULUCF_SUBSTANCES = {"CO2", "GWP_100_AR5_CH4", "GWP_100_AR5_N2O"}
 
 def _booklet_path():
     try:
-        open(_BOOKLET_PRIMARY, "rb").close()
-        return _BOOKLET_PRIMARY
+        open(BOOKLET, "rb").close()
     except PermissionError:
-        print(f"  (primary booklet locked; using temp copy {_BOOKLET_FALLBACK})")
-        return _BOOKLET_FALLBACK
+        raise RuntimeError(
+            f"Cannot read {os.path.basename(BOOKLET)} — the file is locked, "
+            "usually because it is open in Excel. Close it and re-run."
+        )
+    return BOOKLET
 
 
 def load_sheet_long(sheet_name):
