@@ -43,10 +43,10 @@ v0.3 and v0.2. The committed outputs were generated from the versions recorded
 in `data/raw/README.md`.
 
 **The complete set of raw data files, at the exact versions used in the
-analysis, is available for download from the working paper's page on
-cgdev.org.** Use that in preference to `00_download_raw.py` if you want to
-reproduce the committed outputs exactly rather than re-run the analysis against
-current data.
+analysis, is available for download from the [working paper's page on
+cgdev.org](https://www.cgdev.org/publication/comparative-analysis-greenhouse-gas-emissions-developed-and-developing-countries-1850).**
+Use that in preference to `00_download_raw.py` if you want to reproduce the
+committed outputs exactly rather than re-run the analysis against current data.
 
 ## Measures and source coverage
 

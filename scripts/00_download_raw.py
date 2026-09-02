@@ -34,9 +34,6 @@ DIRECT = [
     ("owid-co2-data.csv",
      "https://owid-public.owid.io/data/co2/owid-co2-data.csv",
      15_000_000),
-    ("owid-co2-codebook.csv",
-     "https://raw.githubusercontent.com/owid/co2-data/master/owid-co2-codebook.csv",
-     20_000),
     ("Guetschow_et_al_2025a-PRIMAP-hist_v2.7_final_no_extrap_no_rounding_22-Aug-2025.csv",
      "https://zenodo.org/records/17090760/files/"
      "Guetschow_et_al_2025a-PRIMAP-hist_v2.7_final_no_extrap_no_rounding_22-Aug-2025.csv"
@@ -57,10 +54,6 @@ DIRECT = [
      "https://ourworldindata.org/grapher/population.csv"
      "?v=1&csvType=full&useColumnShortNames=false",
      1_000_000),
-    ("population.metadata.json",
-     "https://ourworldindata.org/grapher/population.metadata.json"
-     "?v=1&csvType=full&useColumnShortNames=false",
-     1_000),
     ("mpd2023_web.xlsx",
      "https://dataverse.nl/api/access/datafile/421302",
      2_000_000),

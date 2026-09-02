@@ -15,7 +15,6 @@ CC BY 4.0 permits redistribution).
 | File | Source | Coverage | Notes |
 |------|--------|----------|-------|
 | `owid-co2-data.csv` | Our World in Data (GCB 2025) | 1750–2024, CO2 + GHGs | Primary OWID dataset |
-| `owid-co2-codebook.csv` | Our World in Data | — | Column definitions for owid-co2-data.csv |
 | `CW_HistoricalEmissions_ClimateWatch.csv` | Climate Watch | 1990–2023, all GHGs | **Committed.** Wide format; sector × gas rows. The "EUU" (EU bloc) row is excluded by the extract |
 | `Guetschow_et_al_2025a-PRIMAP-hist_v2.7_final_no_extrap_no_rounding_22-Aug-2025.csv` | PRIMAP-hist v2.7 (Gütschow et al. 2025) | 1750–2024, all GHGs | Wide format; country ISO3 only, no global/regional aggregates |
 | `EDGAR_2025_GHG_booklet_2025.xlsx` | EDGAR Community GHG Database, JRC/IEA 2025 Report | 1970–2024 (GHG); 1990–2024 (LULUCF) | Mt CO2eq/yr, AR5 GWPs. Sheets used: `GHG_by_sector_and_country`, `LULUCF_countries` |
@@ -24,7 +23,6 @@ CC BY 4.0 permits redistribution).
 | `National_LandUseChange_Carbon_Emissions_2025v0.2.xlsx` | Global Carbon Project (GCB 2025) | LUC CO2 by country | **Committed.** MtC; sheets: BLUE, OSCAR, LUCE |
 | `territorial_rule_database_1850_2023.csv` | Carbon Brief, [colonial-emissions-data](https://github.com/carbonbrief/colonial-emissions-data) | 1850–2023 | 159 territories, 16 colonial-power columns + Independent; coefficients per (territory, year) sum to ~1.0; Yugoslavia row (blank ISO) dropped |
 | `population.csv` | Our World in Data (HYDE; Gapminder; UN WPP) | 10,000 BCE–2023 | Long-run population; used for the Ireland pre-1950 patch ("Ireland (whole island)" rows, 1850–1920) |
-| `population.metadata.json` | Our World in Data | — | Provenance metadata for population.csv |
 | `mpd2023_web.xlsx` | Maddison Project Database 2023 | — | Used for the Ireland population patch, 1921–1949 (sheet "Full data", countrycode=IRL) |
 
 ---
