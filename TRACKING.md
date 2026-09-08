@@ -21,7 +21,7 @@ before loading `tracking.js` and this file must gain a table per interactive.
 | `preset` | `year_range_reset` | — | Reset button. Disabled at full range, so it only fires on a real reset. |
 | `detail_open` / `detail_close` | `country_picker` | — | "+ Add country group" opens; Cancel closes. Adding a group closes the picker without a `detail_close`. |
 | `view_control` | `picker_group_by` | `none`, `annex`, `institutional`, `development`, `income`, `region` | Group-by dropdown inside the picker. 6 values. |
-| `preset` | `add_country_group` | named set only, e.g. `G7`, `EU27`, `BRICS` | Fires on "Add to chart". `action_value` is sent **only** when the selection exactly matches a known named set; user-typed and default (`Custom group N`) names are omitted, per the cardinality rule. |
+| `filter` | `add_country_group` | named set only, e.g. `G7`, `EU27`, `BRICS` | Fires on "Add to chart". `action_value` is sent **only** when the selection exactly matches a known named set; user-typed and default (`Custom group N`) names are omitted, per the cardinality rule. |
 | `filter` | `remove_country_group` | — | Fires from both removal paths: the × on the group chip and the "remove ×" control on the chart row. Group names are free text so no value is sent. |
 | `detail_open` / `detail_close` | `country_group_members` | — | Expanding a group chip to list its member countries. |
 | `detail_open` / `detail_close` | `data_table` | — | "View the data" `<details>` element. |
