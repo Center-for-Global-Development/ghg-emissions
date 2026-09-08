@@ -1,4 +1,7 @@
-/* CGD branding — palette and variable names from cgd-brand-reference.md in the
+/* Type sizes are rem (root 16px) so they scale with browser zoom and user font
+ * settings, per the brand reference's "use relative units" note.
+ *
+ * CGD branding — palette and variable names from cgd-brand-reference.md in the
  * CGD Interactive Toolkit, which supersedes the derived colours previously used
  * here (#1A8A9E, #CC8E00, #5DBDD0, #5B8C96, #A8D5DB, #D6EAED — the local
  * cgd-general/CGD-branding.md already flagged those as unofficial).
@@ -30,7 +33,7 @@ body {
   background: transparent;   /* host page controls the backdrop */
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.4;
 }
 
@@ -41,14 +44,14 @@ body {
 }
 
 .chart-title {
-  font-size: 20px;
-  font-weight: 600;
+  font-size: 1.25rem;
+  font-weight: 700;
   color: var(--cgd-teal);
   margin: 0 0 4px;
 }
 
 .chart-subtitle {
-  font-size: 13.5px;
+  font-size: 0.85rem;
   color: var(--ink-secondary);
   margin: 0 0 16px;
 }
@@ -65,7 +68,7 @@ body {
 .control { display: flex; flex-direction: column; gap: 6px; }
 
 .control-label {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -74,7 +77,7 @@ body {
 
 .control select {
   font-family: inherit;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--ink);
   padding: 6px 8px;
   border: 1px solid var(--cgd-teal-gray);
@@ -112,11 +115,11 @@ body {
 
 /* dual-handle year slider */
 .control-years { flex: 1 1 260px; min-width: 240px; }
-.year-readout { text-transform: none; font-weight: 600; color: var(--cgd-teal); margin-left: 6px; font-size: 13px; }
+.year-readout { text-transform: none; font-weight: 600; color: var(--cgd-teal); margin-left: 6px; font-size: 0.8125rem; }
 
 .year-reset {
   font-family: inherit;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -171,7 +174,7 @@ body {
 
 .range-ends {
   display: flex; justify-content: space-between;
-  font-size: 11.5px; color: var(--ink-secondary);
+  font-size: 0.72rem; color: var(--ink-secondary);
   margin-top: 2px;
 }
 
@@ -180,7 +183,7 @@ body {
 
 .add-group-btn, .picker-footer button {
   font-family: inherit;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: #fff;
   background: var(--cgd-light-teal);
@@ -210,14 +213,14 @@ body {
 .picker-controls { display: flex; gap: 10px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
 .picker-controls input[type="search"] {
   flex: 1 1 160px;
-  font-family: inherit; font-size: 13.5px;
+  font-family: inherit; font-size: 0.85rem;
   padding: 6px 8px;
   border: 1px solid var(--cgd-teal-gray);
   border-radius: 6px;
 }
-.picker-groupby { font-size: 12.5px; color: var(--ink-secondary); display: inline-flex; align-items: center; gap: 6px; }
+.picker-groupby { font-size: 0.78rem; color: var(--ink-secondary); display: inline-flex; align-items: center; gap: 6px; }
 .picker-groupby select {
-  font-family: inherit; font-size: 13px;
+  font-family: inherit; font-size: 0.8125rem;
   padding: 4px 6px;
   border: 1px solid var(--cgd-teal-gray);
   border-radius: 6px;
@@ -234,7 +237,7 @@ body {
 .picker-bucket, .picker-item {
   display: flex; align-items: center; gap: 8px;
   padding: 4px 10px;
-  font-size: 13.5px;
+  font-size: 0.85rem;
   cursor: pointer;
 }
 .picker-bucket {
@@ -245,16 +248,16 @@ body {
 }
 .picker-item { padding-left: 26px; }
 .picker-item:hover { background: var(--cgd-cream); }
-.picker-empty { padding: 10px; color: var(--ink-secondary); font-size: 13px; }
+.picker-empty { padding: 10px; color: var(--ink-secondary); font-size: 0.8125rem; }
 
 .picker-footer {
   display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
   margin-top: 10px;
 }
-.picker-count { font-size: 12.5px; color: var(--ink-secondary); min-width: 78px; }
+.picker-count { font-size: 0.78rem; color: var(--ink-secondary); min-width: 78px; }
 .picker-footer input[type="text"] {
   flex: 1 1 140px;
-  font-family: inherit; font-size: 13.5px;
+  font-family: inherit; font-size: 0.85rem;
   padding: 6px 8px;
   border: 1px solid var(--cgd-teal-gray);
   border-radius: 6px;
@@ -273,7 +276,7 @@ body {
   flex: 1;
   text-align: left;
   font-family: inherit;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: var(--cgd-teal);
   background: none;
@@ -284,7 +287,7 @@ body {
 .group-view:hover { color: var(--cgd-light-teal); }
 .group-remove {
   font-family: inherit;
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1;
   color: var(--ink-secondary);
   background: none;
@@ -294,7 +297,7 @@ body {
 }
 .group-remove:hover { color: var(--cgd-red); }
 .group-members {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--ink-secondary);
   padding: 4px 2px 2px;
   max-height: 120px;
@@ -303,18 +306,19 @@ body {
 
 .row-remove {
   fill: var(--ink-secondary);
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-family: var(--font-body);
   cursor: pointer;
 }
 .row-remove:hover, .row-remove:focus { fill: var(--cgd-red); }
+.row-remove:focus-visible { outline: 2px solid var(--cgd-light-teal); outline-offset: 3px; }
 
 /* ---- legend ---------------------------------------------------------- */
 .legend {
   display: flex; flex-wrap: wrap;
   gap: 6px 18px;
   margin: 4px 0 2px;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 .legend-item { display: inline-flex; align-items: center; gap: 6px; }
 .legend-item.inactive { opacity: 0.38; }
@@ -327,19 +331,24 @@ body {
 }
 .legend-swatch.gmst::before { left: 6px; top: 0; width: 2.5px; height: 14px; }
 .legend-swatch.gmst::after  { top: 6px; left: 0; height: 2.5px; width: 14px; }
-.legend-note { font-size: 11.5px; color: var(--ink-secondary); }
+.legend-note { font-size: 0.72rem; color: var(--ink-secondary); }
 
 /* ---- chart ----------------------------------------------------------- */
 .chart-wrap { position: relative; }
 #chart { width: 100%; height: auto; display: block; }
 
-.grid-line { stroke: var(--cgd-light-gray); stroke-width: 1; stroke-dasharray: 3 3; }
-.axis-label { fill: var(--ink-secondary); font-size: 12px; font-family: var(--font-body); }
-.row-label { fill: var(--ink); font-size: 14px; font-weight: 600; font-family: var(--font-body); }
+.grid-line { stroke: var(--cgd-light-gray); stroke-width: 1; }
+/* Brand hierarchy: tick values Regular in Teal Black; axis title Medium in Teal. */
+.axis-label { fill: var(--ink); font-size: 0.75rem; font-family: var(--font-body); }
+.axis-title { fill: var(--cgd-teal); font-size: 0.875rem; font-weight: 500; font-family: var(--font-body); }
+.row-label { fill: var(--ink); font-size: 0.875rem; font-weight: 600; font-family: var(--font-body); }
 .connector { stroke: var(--cgd-teal-gray); stroke-width: 2.5; stroke-linecap: round; }
 .dot { stroke: #fff; stroke-width: 1.5; }
 .dot-hit { fill: transparent; cursor: pointer; }
+/* Focus on a hit band is shown as a ring drawn on the mark itself (see
+ * renderChart), not as an outline around the tall, invisible band. */
 .dot-hit:focus-visible { outline: none; }
+.focus-ring { fill: none; stroke: var(--cgd-light-teal); stroke-width: 2.5; pointer-events: none; }
 .dot.lifted { stroke: var(--ink); stroke-width: 2; }
 .gmst-mark { stroke: var(--ink); stroke-width: 2.5; stroke-linecap: round; }
 
@@ -352,25 +361,31 @@ body {
   border-radius: 6px;
   box-shadow: 0 2px 8px rgba(11, 76, 91, 0.18);
   padding: 7px 10px;
-  font-size: 12.5px;
+  font-size: 0.78rem;
   max-width: 240px;
   z-index: 5;
 }
 .tooltip .tt-row { display: flex; align-items: baseline; gap: 6px; white-space: nowrap; }
 .tooltip .tt-key { width: 12px; height: 3px; border-radius: 1.5px; flex: none; align-self: center; }
-.tooltip .tt-value { font-size: 14px; font-weight: 700; color: var(--ink); }
+.tooltip .tt-value { font-size: 0.875rem; font-weight: 700; color: var(--ink); }
 .tooltip .tt-label { color: var(--ink-secondary); }
-.tooltip .tt-note { color: var(--ink-secondary); font-size: 11.5px; margin-top: 3px; }
+.tooltip .tt-note { color: var(--ink-secondary); font-size: 0.72rem; margin-top: 3px; }
 
 /* ---- footnote, table ------------------------------------------------- */
+/* Notes: Sofia Pro Light Italic per the brand reference. */
 .footnote {
-  font-size: 12px;
-  color: var(--ink-secondary);
+  font-size: 0.75rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--ink);
   margin: 10px 0 6px;
 }
 
-.data-table { font-size: 13px; margin: 6px 0; }
+.data-table { font-size: 0.8125rem; margin: 6px 0; }
 .data-table summary { cursor: pointer; color: var(--cgd-light-teal); font-weight: 600; }
+/* Up to four custom groups make the table wider than a phone viewport; it
+ * scrolls inside this wrapper rather than being clipped by body overflow-x. */
+.table-scroll { overflow-x: auto; max-width: 100%; -webkit-overflow-scrolling: touch; }
 .data-table table { border-collapse: collapse; margin-top: 8px; }
 .data-table th, .data-table td {
   text-align: right; padding: 4px 12px;
@@ -380,8 +395,10 @@ body {
 .data-table thead th { color: var(--ink-secondary); font-weight: 600; }
 
 .source-line {
-  font-size: 11px;
-  color: var(--ink-secondary);
+  font-size: 0.6875rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--ink);
   margin: 10px 0 0;
 }
 
@@ -391,6 +408,7 @@ body {
 
 @media (max-width: 560px) {
   .controls { gap: 12px 18px; }
-  .chart-title { font-size: 17px; }
-  .row-label { font-size: 12px; }
+  .chart-title { font-size: 1.0625rem; }
+  .row-label { font-size: 0.75rem; }
+  .axis-title { font-size: 0.75rem; }   /* the full title still fits the 320px plot */
 }

@@ -5,8 +5,30 @@ emission shares (Annex I / Annex II / non-Annex I), with a measure selector,
 colonial-attribution toggle, year-range slider, and a custom country-group
 picker.
 
-Embed URL:
+**Embedded on:**
+<https://www.cgdev.org/blog/not-fit-purpose-why-climate-classifications-developed-and-developing-countries-have-change>
+
+**Embed URL:**
 `https://center-for-global-development.github.io/ghg-emissions/ghg-emissions-interactive/`
+
+**Recommended iframe** (paste into the CMS; the page's resize listener sets the
+height after load, so the `height` here is only a pre-load placeholder):
+
+```html
+<iframe
+  src="https://center-for-global-development.github.io/ghg-emissions/ghg-emissions-interactive/"
+  title="Interactive chart: Annex I and Annex II shares of world cumulative emissions, by dataset"
+  width="100%"
+  height="720"
+  style="border: 0; width: 100%; max-width: 100%; display: block;"
+  loading="lazy"
+  scrolling="no"></iframe>
+```
+
+Append URL parameters to `src` to change the initial view — for example
+`?custom=0` hides the country-group picker for a blog embed, and
+`?measure=co2_incLUC&start=1990&end=2024` opens on a different measure and
+period. See "Embed configuration" below for the full list.
 
 > The interactive is in this subfolder, not at the repository root. The CGD
 > Interactive Toolkit's single-interactive layout puts `index.html` at the

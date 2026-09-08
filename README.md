@@ -104,7 +104,8 @@ and re-cumulating — a linear approximation that behaves well for cumulative
 An interactive dumbbell chart comparing each source's estimate of cumulative
 emission shares (Annex I / Annex II / non-Annex I), with a measure selector,
 colonial-attribution toggle, year-range slider, and a custom country-group
-picker is at `ghg-emissions-interactive/`.
+picker is at `ghg-emissions-interactive/`. It is embedded on the CGD blog post
+[Not Fit for Purpose: Why Climate Classifications of Developed and Developing Countries Have to Change](https://www.cgdev.org/blog/not-fit-purpose-why-climate-classifications-developed-and-developing-countries-have-change).
 
 Embed URL, configuration parameters, colours, payload sizes and the toolkit
 delivery checklist are documented in

@@ -298,6 +298,36 @@
     return node;
   }
 
+  // Greedy word-wrap for an SVG <text> already in the DOM, measured with the
+  // element's own font. Returns up to maxLines strings; the last is ellipsised
+  // if the label still does not fit.
+  function wrapSvgText(textEl, label, maxWidth, maxLines) {
+    var probe = svgEl("tspan", {});
+    textEl.appendChild(probe);
+    function width(s) { probe.textContent = s; return probe.getComputedTextLength(); }
+    var lines = [], cur = "";
+    label.split(/\s+/).forEach(function (w) {
+      var test = cur ? cur + " " + w : w;
+      if (!cur || width(test) <= maxWidth) cur = test;
+      else { lines.push(cur); cur = w; }
+    });
+    lines.push(cur);
+    if (lines.length > maxLines) {
+      lines = lines.slice(0, maxLines);
+      lines[maxLines - 1] += "…";
+    }
+    // Ellipsise any line that is still too wide (a single long word, or the
+    // overflow line above).
+    lines = lines.map(function (ln) {
+      while (width(ln) > maxWidth && ln.length > 2) {
+        ln = ln.replace(/…$/, "").slice(0, -1).replace(/\s+$/, "") + "…";
+      }
+      return ln;
+    });
+    textEl.removeChild(probe);
+    return lines;
+  }
+
   // ---- slider ---------------------------------------------------------------
 
   function setSliderBounds(attribution) {
@@ -379,12 +409,28 @@
   });
 
   // Tracking fires on "change" (pointer release), not on the "input" events that
-  // drive rendering — one event per adjustment rather than one per pixel dragged.
+  // drive rendering. Keyboard users get a "change" per arrow-key press, though, so
+  // the call is debounced: one event once the handle has been still for a moment.
+  var TRACK_SETTLE_MS = 800;
+  var trackTimer = null;
   [el.startRange, el.endRange].forEach(function (input) {
     input.addEventListener("change", function () {
-      track("filter", "year_range", periodText());
+      clearTimeout(trackTimer);
+      trackTimer = setTimeout(function () {
+        track("filter", "year_range", yearRangeBucket());
+      }, TRACK_SETTLE_MS);
     });
   });
+
+  // The exact range has ~15,000 possible values, far past the standard's
+  // cardinality ceiling. Report decades instead, keeping the true bounds when a
+  // handle sits at the end of the slider so the full range reads as "1850–2024".
+  function yearRangeBucket() {
+    var min = +el.startRange.min, max = +el.startRange.max;
+    var s = state.start === min ? min : Math.floor(state.start / 10) * 10;
+    var e = state.end === max ? max : Math.floor(state.end / 10) * 10;
+    return s + "–" + e;
+  }
 
   // ---- controls ---------------------------------------------------------------
 
@@ -627,7 +673,7 @@
     state.customGroups.push({ id: customIdSeq++, name: name, isos: isos });
     // Only a matched named set is reported: user-typed and default names are
     // unbounded, and the standard's cardinality rule says omit rather than guess.
-    track("preset", "add_country_group", namedSet || undefined);
+    track("filter", "add_country_group", namedSet || undefined);
     closePicker();
     render();
   });
@@ -762,11 +808,12 @@
       top: 16,
       right: narrow ? 16 : 24,
       bottom: narrow ? 46 : 52,
-      left: narrow ? 84 : 128
+      left: narrow ? 98 : 128     // narrow gutter still fits "Lower-middle" at 12px
     };
     var rowH = narrow ? 76 : 96;
     var tickStep = narrow ? 25 : 10;
-    var labelMax = narrow ? 10 : 16;
+    var labelW = margin.left - 14 - 6;     // room for the row label, right-aligned
+    var labelLineH = narrow ? 14 : 17;      // line pitch when a label wraps
     var H = margin.top + rowH * rows.length + margin.bottom;
     var plotW = W - margin.left - margin.right;
 
@@ -790,8 +837,10 @@
       lbl.textContent = g;
       svg.appendChild(lbl);
     }
+    // Centred on the plot; on the full width when narrow, where the label gutter
+    // leaves too little plot for the title.
     var axisTitle = svgEl("text", {
-      class: "axis-label", x: margin.left + plotW / 2,
+      class: "axis-title", x: narrow ? W / 2 : margin.left + plotW / 2,
       y: margin.top + rowH * rows.length + 40, "text-anchor": "middle"
     });
     axisTitle.textContent = "Share of world total over selected period (%)";
@@ -800,22 +849,28 @@
     rows.forEach(function (row, i) {
       var cy = margin.top + rowH * i + rowH / 2;
 
-      var labelText = row.label.length > labelMax ?
-        row.label.slice(0, labelMax - 1) + "…" : row.label;
+      // Labels wrap onto up to two measured lines rather than being cut at a
+      // character count, so "Sub-Saharan Africa" no longer spills past the left
+      // edge. Anything still too long is ellipsised on the second line and the
+      // full name is exposed via aria-label (the chip list and data table also
+      // carry it in full).
       var rowLbl = svgEl("text", {
-        class: "row-label", x: margin.left - 14, y: cy + 5, "text-anchor": "end"
+        class: "row-label", x: margin.left - 14, "text-anchor": "end"
       });
-      rowLbl.textContent = labelText;
-      if (labelText !== row.label) {
-        var tEl = svgEl("title", {});
-        tEl.textContent = row.label;
-        rowLbl.appendChild(tEl);
-      }
       svg.appendChild(rowLbl);
+      var lines = wrapSvgText(rowLbl, row.label, labelW, 2);
+      var firstY = cy + 5 - (lines.length - 1) * labelLineH / 2;
+      lines.forEach(function (ln, li) {
+        var ts = svgEl("tspan", { x: margin.left - 14, y: firstY + li * labelLineH });
+        ts.textContent = ln;
+        rowLbl.appendChild(ts);
+      });
+      if (lines.join(" ") !== row.label) rowLbl.setAttribute("aria-label", row.label);
+      var lastLineY = firstY + (lines.length - 1) * labelLineH;
 
       if (row.custom) {
         var rm = svgEl("text", {
-          class: "row-remove", x: margin.left - 14, y: cy + 22,
+          class: "row-remove", x: margin.left - 14, y: lastLineY + 17,
           "text-anchor": "end", role: "button", tabindex: 0,
           "aria-label": "Remove " + row.label
         });
@@ -885,6 +940,13 @@
         svg.appendChild(svgEl("line", { class: "gmst-mark", x1: gx2, x2: gx2, y1: cy - arm, y2: cy + arm }));
       });
 
+      // Keyboard focus indicator: a ring drawn around the focused mark. One per
+      // row, moved to whichever mark's hit band has focus.
+      var focusRing = svgEl("circle", { class: "focus-ring", r: 11, cy: cy });
+      focusRing.setAttribute("aria-hidden", "true");
+      focusRing.style.display = "none";
+      svg.appendChild(focusRing);
+
       // Hit targets on top; hovering one mark reads out every mark within 0.75pp.
       // Each target is a tall band reaching halfway to its neighbours (capped),
       // so the pointer only has to be near a mark rather than on it. Bands abut
@@ -927,9 +989,16 @@
           showTooltip(box.left + x * scale, box.top + cy * scale, entries, notes);
         }
         hit.addEventListener("pointerenter", over);
-        hit.addEventListener("focus", over);
+        hit.addEventListener("focus", function () {
+          focusRing.setAttribute("cx", x);
+          focusRing.style.display = "";
+          over();
+        });
         hit.addEventListener("pointerleave", hideTooltip);
-        hit.addEventListener("blur", hideTooltip);
+        hit.addEventListener("blur", function () {
+          focusRing.style.display = "none";
+          hideTooltip();
+        });
         svg.appendChild(hit);
       });
     });
@@ -1055,7 +1124,14 @@
     if (q.get("colonial") === "1") state.attribution = "colonial";
     if (!isNaN(parseInt(q.get("start"), 10))) state.start = parseInt(q.get("start"), 10);
     if (!isNaN(parseInt(q.get("end"), 10))) state.end = parseInt(q.get("end"), 10);
-    if (state.end < state.start) state.end = state.start;
+    // A year outside the data, or a start after the end, falls back to the full
+    // range rather than clamping to a one-year chart.
+    var b = yearBounds(state.attribution);
+    var inRange = function (y) { return y >= b.min && y <= b.max; };
+    if (!inRange(state.start) || !inRange(state.end) || state.end < state.start) {
+      state.start = b.min;
+      state.end = b.max;
+    }
     el.measure.value = state.measure;
     el.colonial.checked = state.attribution === "colonial";
   })();
@@ -1066,6 +1142,12 @@
 
   setSliderBounds(state.attribution);
   render();
+
+  // Row-label wrapping is measured in the current font, so redraw once Sofia Pro
+  // has replaced the fallback face.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(render);
+  }
 
   // Redraw when the container width changes (host page resize, or the iframe being
   // re-sized by the parent). Width only: renderChart changes the SVG's height, so
