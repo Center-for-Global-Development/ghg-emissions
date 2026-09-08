@@ -78,14 +78,16 @@
   <div class="legend" id="legend" aria-label="Datasets shown"></div>
 
   <div class="chart-wrap">
-    <svg id="chart" role="img" aria-labelledby="chartTitle"></svg>
+    <svg id="chart" role="group" aria-labelledby="chartTitle"></svg>
     <div class="tooltip" id="tooltip" role="status" hidden></div>
   </div>
 
   <p class="footnote" id="footnote"></p>
   <details class="data-table">
     <summary>View the data</summary>
-    <table id="dataTable"></table>
+    <div class="table-scroll">
+      <table id="dataTable"></table>
+    </div>
   </details>
   <p class="source-line">Sources: OWID (Global Carbon Budget 2025); PRIMAP-hist v2.7; Global Carbon Project 2025 (fossil + BLUE/OSCAR/LUCE land-use models); EDGAR 2025 (JRC/IEA); Climate Watch; Jones et al., National contributions to climate change (GMST). Colonial attribution: Carbon Brief territorial-rule database, 1850&#8211;2023. Chart: Center for Global Development.</p>
 

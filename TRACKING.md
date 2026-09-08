@@ -17,7 +17,7 @@ before loading `tracking.js` and this file must gain a table per interactive.
 |---|---|---|---|
 | `filter` | `measure_select` | `ghg_incLUC`, `co2_incLUC`, `ghg_excLUC`, `co2_excLUC` | Measure dropdown. 4 values. |
 | `filter` | `colonial_attribution` | `on`, `off` | Colonial attribution toggle. 2 values. |
-| `filter` | `year_range` | e.g. `1900–2000` | Dual-handle year slider. Fires on `change` (pointer release), not on the `input` events that drive rendering. Both handles share one label. Bounded by the 1850–2024 range. |
+| `filter` | `year_range` | decade-rounded range, e.g. `1900–2000`; `1850–2024` when at the full range | Dual-handle year slider. Fires on `change` (pointer release), not on the `input` events that drive rendering, and is debounced (800 ms) so a keyboard user stepping through years sends one event, not one per key press. Start and end are floored to the decade unless the handle sits at the slider bound, where the true bound is kept. Both handles share one label. At most ~180 distinct values. |
 | `preset` | `year_range_reset` | — | Reset button. Disabled at full range, so it only fires on a real reset. |
 | `detail_open` / `detail_close` | `country_picker` | — | "+ Add country group" opens; Cancel closes. Adding a group closes the picker without a `detail_close`. |
 | `view_control` | `picker_group_by` | `none`, `annex`, `institutional`, `development`, `income`, `region` | Group-by dropdown inside the picker. 6 values. |
@@ -31,7 +31,9 @@ before loading `tracking.js` and this file must gain a table per interactive.
 - **Tooltip hover on chart marks.** Excluded by the standard — high volume, low signal.
   The marks are also focusable, so tracking would fire on keyboard traversal too.
 - **Slider `input` events during drag.** Rendering listens on `input`; tracking listens
-  on `change` only, so one adjustment produces one event.
+  on `change` only and debounces, so one adjustment produces one event.
+- **Exact slider years.** The tracked `year_range` is decade-rounded (see above) to keep
+  the value set bounded.
 - **Picker search box.** Free text, unbounded cardinality.
 - **Per-country checkboxes and bucket select-all inside the picker.** High volume during
   a single selection; the resulting `add_country_group` event captures the outcome.

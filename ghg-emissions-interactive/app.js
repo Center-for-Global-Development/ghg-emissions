@@ -379,12 +379,28 @@
   });
 
   // Tracking fires on "change" (pointer release), not on the "input" events that
-  // drive rendering — one event per adjustment rather than one per pixel dragged.
+  // drive rendering. Keyboard users get a "change" per arrow-key press, though, so
+  // the call is debounced: one event once the handle has been still for a moment.
+  var TRACK_SETTLE_MS = 800;
+  var trackTimer = null;
   [el.startRange, el.endRange].forEach(function (input) {
     input.addEventListener("change", function () {
-      track("filter", "year_range", periodText());
+      clearTimeout(trackTimer);
+      trackTimer = setTimeout(function () {
+        track("filter", "year_range", yearRangeBucket());
+      }, TRACK_SETTLE_MS);
     });
   });
+
+  // The exact range has ~15,000 possible values, far past the standard's
+  // cardinality ceiling. Report decades instead, keeping the true bounds when a
+  // handle sits at the end of the slider so the full range reads as "1850–2024".
+  function yearRangeBucket() {
+    var min = +el.startRange.min, max = +el.startRange.max;
+    var s = state.start === min ? min : Math.floor(state.start / 10) * 10;
+    var e = state.end === max ? max : Math.floor(state.end / 10) * 10;
+    return s + "–" + e;
+  }
 
   // ---- controls ---------------------------------------------------------------
 
@@ -885,6 +901,13 @@
         svg.appendChild(svgEl("line", { class: "gmst-mark", x1: gx2, x2: gx2, y1: cy - arm, y2: cy + arm }));
       });
 
+      // Keyboard focus indicator: a ring drawn around the focused mark. One per
+      // row, moved to whichever mark's hit band has focus.
+      var focusRing = svgEl("circle", { class: "focus-ring", r: 11, cy: cy });
+      focusRing.setAttribute("aria-hidden", "true");
+      focusRing.style.display = "none";
+      svg.appendChild(focusRing);
+
       // Hit targets on top; hovering one mark reads out every mark within 0.75pp.
       // Each target is a tall band reaching halfway to its neighbours (capped),
       // so the pointer only has to be near a mark rather than on it. Bands abut
@@ -927,9 +950,16 @@
           showTooltip(box.left + x * scale, box.top + cy * scale, entries, notes);
         }
         hit.addEventListener("pointerenter", over);
-        hit.addEventListener("focus", over);
+        hit.addEventListener("focus", function () {
+          focusRing.setAttribute("cx", x);
+          focusRing.style.display = "";
+          over();
+        });
         hit.addEventListener("pointerleave", hideTooltip);
-        hit.addEventListener("blur", hideTooltip);
+        hit.addEventListener("blur", function () {
+          focusRing.style.display = "none";
+          hideTooltip();
+        });
         svg.appendChild(hit);
       });
     });
